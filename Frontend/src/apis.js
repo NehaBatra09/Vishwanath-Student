@@ -5,7 +5,7 @@ export const apis = {
         let res = await fetch(baseUrl + url)
         let response = await res.json()
         console.log(response)
-        if (response.status == 200) {
+        if (response.status) {
             return { status: true, data: response.data, message: response.message }
         }
         else {

@@ -43,7 +43,7 @@ app.get("/transactions/:userId/:accountId", (req, res) => {
     let { userId, accountId } = req.params
     let transactionResults = transactions.filter((transaction) => transaction.userId == userId && transaction.acnumber == accountId)
     if (transactionResults.length > 0) {
-        return res.send(200, { data: transactionResults })
+        return res.send(200, { data: transactionResults, status: true, message: "transactions found" })
     }
     res.send(200, { data: null })
 })
@@ -51,7 +51,7 @@ app.get("/account/:userId", (req, res) => {
     let { userId } = req.params
     let accountResults = accountDetails.filter((account) => account.userId == userId)
     if (accountResults.length > 0) {
-        return res.send(200, { data: accountResults })
+        return res.send(200, { data: accountResults, status: true, message: "account found" })
     }
     res.send(200, { data: null })
 })
