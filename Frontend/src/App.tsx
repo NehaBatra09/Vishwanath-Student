@@ -9,12 +9,12 @@ import AccountForm from './components/AccountForm';
 import AccountView from './components/AccountView';
 import Transactions from './components/Transactions';
 import MainRoute from './components/MainRoute';
+import Counter from './Redux/counter';
 function App() {
 
 
   return (
     <>
-
       <BrowserRouter>
         <Routes>
           <Route path='/' Component={Login} />

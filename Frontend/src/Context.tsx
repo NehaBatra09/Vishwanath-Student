@@ -68,6 +68,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     }
     const getTransactionsByAccountId = async (userId: number, accountId: number) => {
+        setTransactions([])
         let { status, data, message } = await apis.get(`transactions/${userId}/${accountId}`)
         if (status) {
             setTransactions(data)

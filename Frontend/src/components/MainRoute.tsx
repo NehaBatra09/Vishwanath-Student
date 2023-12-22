@@ -7,13 +7,12 @@ interface Compo {
 }
 
 const MainRoute: React.FC<any> = ({ children }) => {
-    const navigate = useNavigate()
-    const { isAuthenticated } = useAuth()
-    useEffect(() => {
-        if (!isAuthenticated) {
-            navigate("/")
-        }
-    }, [])
-    return (<>{isAuthenticated && children}</>)
+    const userId: string | null = localStorage.getItem("userId")
+    console.log(userId)
+    if (userId == undefined) {
+        return <Login />
+    } else {
+        return (<>{children}</>)
+    }
 }
 export default MainRoute

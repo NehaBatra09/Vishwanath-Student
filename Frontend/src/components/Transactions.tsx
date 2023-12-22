@@ -6,16 +6,16 @@ import Header from "./Header";
 const Transactions: React.FC = () => {
     const { transactions, getTransactionsByAccountId } = useAuth();
     const location = useLocation()
-    let { acnumber } = location?.state
+
     const userId: string | null = localStorage.getItem("userId")
     useEffect(() => {
         if (userId) {
             getData(parseInt(userId))
         }
-    }, [userId])
+    }, [])
 
     const getData = async (id: number) => {
-        await getTransactionsByAccountId(id, acnumber)
+        await getTransactionsByAccountId(id, location?.state?.acnumber)
     }
 
     return (<>

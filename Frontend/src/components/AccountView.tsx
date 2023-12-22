@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useAuth } from "../Context";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
-
+import { Button, Card, CardActions, CardContent, Typography } from "@mui/material"
 const AccountView: React.FC = () => {
     const { accounts, getAccounts } = useAuth();
     const userId: string | null = localStorage.getItem("userId")
@@ -19,7 +19,40 @@ const AccountView: React.FC = () => {
 
     return (<>
         <Header />
-        <table style={{ marginLeft: "300px" }}>
+        <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: "30px", justifyContent: "center", alignItems: "center" }}>
+            {accounts.map((account: any) =>
+                <Card sx={{ minWidth: 275, background: "lightblue" }}>
+                    <CardContent>
+                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            AC/No: {account.acnumber}
+                        </Typography>
+                        <Typography variant="h5" component="div">
+                            AC/Type: {account.accountType}
+                        </Typography>
+                        <Typography variant="body2">
+                            Name: {account.Name}
+
+                        </Typography>
+
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                            Email: {account.email}
+                        </Typography>
+                        <Typography variant="body2">
+                            Age:  {account.age}
+
+                        </Typography>
+
+                        <Typography variant="body2">
+                            Date:  {account.date}
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                        <Button size="small" onClick={() => navigate(`/transactions`, { state: { acnumber: account.acnumber } })}>Go To Details</Button>
+                    </CardActions>
+                </Card>
+            )}
+        </div>
+        {/* <table style={{ marginLeft: "300px" }}>
             <thead>
                 <tr>
                     <th>Account Number</th>
@@ -31,9 +64,9 @@ const AccountView: React.FC = () => {
                 </tr>
             </thead>
             <tbody>
-                {accounts.map((account: any) =>
-                    <tr onClick={() => navigate(`/transactions`, { state: { acnumber: account.acnumber } })}>
-                        <td>{account.acnumber}</td>
+               
+                    <tr >
+                        <td></td>
                         <td>{account.accountType}</td>
                         <td>{account.name}</td>
                         <td>{account.email}</td>
@@ -43,7 +76,7 @@ const AccountView: React.FC = () => {
                     </tr>
                 )}
             </tbody>
-        </table>
+        </table> */}
     </>)
 }
 
