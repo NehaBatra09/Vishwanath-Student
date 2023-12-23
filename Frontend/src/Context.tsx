@@ -6,14 +6,17 @@ type AuthContextData = {
     user: any;
     accounts: any;
     transactions: any;
+    accountTypes: any;
     login: (name: string, password: string) => void;
     logout: () => void;
     getAccounts: (userId: number) => Promise<void>;
     getTransactionsByAccountId: (userId: number, accountId: number) => Promise<void>
     addNewAccount: (payload: any) => Promise<void>;
+    getAccountTypes: () => Promise<void>
 };
 
 const AuthContext = createContext<AuthContextData | null>(null)
+
 export const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {
@@ -29,6 +32,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [accounts, setAccounts] = useState([])
     const [transactions, setTransactions] = useState([])
+    const [accountTypes, setAccountTypes] = useState([])
     const login = async (email: string, password: string) => {
         let { status, data, message } = await apis.post("login", { email, password })
         if (status) {
@@ -75,10 +79,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         } else {
         }
     }
+    const getAccountTypes = async () => {
+        let { status, data, message } = await apis.get("accountTypes")
+        if (status) {
+            setAccountTypes(data)
+        }
+    }
 
 
     return (<>
-        <AuthContext.Provider value={{ user, isAuthenticated, accounts, transactions, login, logout, getAccounts, getTransactionsByAccountId, addNewAccount }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, accounts, accountTypes, transactions, login, logout, getAccounts, getTransactionsByAccountId, addNewAccount, getAccountTypes }}>
             {children}
         </AuthContext.Provider>
 
