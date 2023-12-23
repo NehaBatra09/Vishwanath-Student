@@ -1,18 +1,26 @@
 import React, { createContext, useContext, useState } from "react"
 import { apis } from "./apis";
 import { useNavigate } from "react-router-dom";
+type transaction = {
+    name: string,
+    email: string,
+    age: string,
+    accountType: string
+}
 type AuthContextData = {
     isAuthenticated: boolean;
     user: any;
     accounts: any;
     transactions: any;
     accountTypes: any;
+    newTransationDetails: transaction
     login: (name: string, password: string) => void;
     logout: () => void;
     getAccounts: (userId: number) => Promise<void>;
     getTransactionsByAccountId: (userId: number, accountId: number) => Promise<void>
-    addNewAccount: (payload: any) => Promise<void>;
+    addNewAccount: () => Promise<void>;
     getAccountTypes: () => Promise<void>
+    setNewTransactionDetails: (details: transaction) => void;
 };
 
 const AuthContext = createContext<AuthContextData | null>(null)
@@ -33,6 +41,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [accounts, setAccounts] = useState([])
     const [transactions, setTransactions] = useState([])
     const [accountTypes, setAccountTypes] = useState([])
+    const [newTransationDetails, setNewTransactionDetails] = useState<transaction>({ name: "", email: "", age: "", accountType: "" })
+
     const login = async (email: string, password: string) => {
         let { status, data, message } = await apis.post("login", { email, password })
         if (status) {
@@ -64,8 +74,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         } else {
         }
     }
-    const addNewAccount = async (payload: any) => {
-        let { status, data, message } = await apis.post("account", payload)
+    const addNewAccount = async () => {
+        let userId: string | null = localStorage.getItem("userId")
+        console.log(userId)
+        let { status, data, message } = await apis.post("account/" + userId, newTransationDetails)
         if (status) {
             setAccounts(data)
         } else {
@@ -88,7 +100,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 
     return (<>
-        <AuthContext.Provider value={{ user, isAuthenticated, accounts, accountTypes, transactions, login, logout, getAccounts, getTransactionsByAccountId, addNewAccount, getAccountTypes }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, accounts, accountTypes, transactions, newTransationDetails, login, logout, getAccounts, getTransactionsByAccountId, addNewAccount, getAccountTypes, setNewTransactionDetails }}>
             {children}
         </AuthContext.Provider>
 

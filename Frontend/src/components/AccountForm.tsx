@@ -2,12 +2,16 @@ import { Container, TextField, Button, Typography, Box, Select, MenuItem, InputL
 import { useAuth } from '../Context';
 import { useEffect } from 'react';
 const AccountForm: React.FC = () => {
-    let { accountTypes, getAccountTypes } = useAuth()
+    let { accountTypes, newTransationDetails, setNewTransactionDetails, getAccountTypes, addNewAccount } = useAuth()
     useEffect(() => {
         getData()
     }, [])
     const getData = async () => {
         await getAccountTypes()
+    }
+    const handleSubmit = async (e: any) => {
+        e.preventDefault()
+        await addNewAccount()
     }
 
     return (<>
@@ -16,13 +20,14 @@ const AccountForm: React.FC = () => {
                 <Typography variant="h4" align="center" gutterBottom>
                     Account Form
                 </Typography>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <TextField
                         fullWidth
                         id="name"
                         label="Name"
                         variant="outlined"
                         margin="normal"
+                        onChange={(e) => setNewTransactionDetails({ ...newTransationDetails, name: e.target.value })}
                     />
                     <TextField
                         fullWidth
@@ -31,6 +36,7 @@ const AccountForm: React.FC = () => {
                         type="password"
                         variant="outlined"
                         margin="normal"
+                        onChange={(e) => setNewTransactionDetails({ ...newTransationDetails, email: e.target.value })}
                     />
                     <TextField
                         fullWidth
@@ -45,9 +51,11 @@ const AccountForm: React.FC = () => {
                             labelId="accountType"
                             id="accountType"
                             label="Account Type"
+                            value={newTransationDetails.accountType}
+                            onChange={(e) => setNewTransactionDetails({ ...newTransationDetails, accountType: e.target.value })}
                         >
-                            {accountTypes.map((accountType: string) =>
-                                <MenuItem value={10}>{accountType}</MenuItem>
+                            {accountTypes.map((accountType: string, index: number) =>
+                                <MenuItem value={accountType}>{accountType}</MenuItem>
                             )}
                         </Select>
                     </FormControl>

@@ -19,6 +19,7 @@ const AccountView: React.FC = () => {
 
     return (<>
         <Header />
+        <Button onClick={() => navigate("/accountForm")}>Create Account</Button>
         <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: "30px", justifyContent: "center", alignItems: "center" }}>
             {accounts.map((account: any) =>
                 <Card sx={{ minWidth: 275, background: "lightblue" }}>
