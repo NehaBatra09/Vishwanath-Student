@@ -1,0 +1,96 @@
+Day 1:
+
+Theory
+
+describe let ,var, const and difference between them with examples
+difference between arrow function and  normal functions 
+what is callback function give 3 examples
+what is highorder functions give 3 examples
+what is async function and how it is created
+what is promises and how we handle promises using async and await
+
+
+
+
+
+Coding
+
+// How do you create an empty array in JavaScript?
+
+// How do you access the first and last elements of an array?
+
+// How do you loop through an array in JavaScript?
+
+// Write a program to reverse the array
+
+
+
+// Write a program to sort the given array --->input[3,1,5,2,4]--->output[1,2,3,4,5]
+
+
+
+// Array of objects
+
+// example: Find an object in an array by its values - Array.find
+
+const students = [
+    {id:1, name: "simer", position: "web developer"},
+    {id:2, name: "tejbir", postion: "laywer"},
+    {id:3, name: "sagar", position: "seo"},
+    {id:4, name: "arun", position: "web developer"},
+
+]
+
+
+// Array of objects
+// example: Get multiple items from an array that match a condition -  Array.filter
+
+const students = [
+    {id:1, name: "simer", position: "web developer"},
+    {id:2, name: "tejbir", postion: "laywer"},
+    {id:3, name: "sagar", position: "seo"},
+    {id:4, name: "arun", position: "web developer"},
+
+]
+
+
+
+// example:Add a property to every object of an array -Array.forEach
+
+
+
+// example:Checking if objects in array fulfill a condition - Array.every, Array.includes
+
+
+// example:Sort an array by a property - Array.sort
+
+const fruits = ["fruit2", "fruit5", "fruit1", "fruit3"]
+
+
+// 1. get full name means firstname+lastname 
+// input:
+ const persons = [
+  {firstname : "Malcom", lastname: "Reynolds"},
+  {firstname : "Kaylee", lastname: "Frye"},
+  {firstname : "Jayne", lastname: "Cobb"}
+];
+
+
+// 2.input: let arr = [3, 4, 5, 6]; output:[9, 12, 15, 18]
+
+
+// nested loop over object [[1,2,3],[4,5,6],[3,5,6]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+

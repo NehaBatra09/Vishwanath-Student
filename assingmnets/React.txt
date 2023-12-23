@@ -1,0 +1,22 @@
+Therory
+Props, state
+difference between prps and state
+what is hook
+usestate,usememo,usecallback,usecontext,useeffect give at least 2 examples of each
+what is highorder component explain its usecase
+
+
+
+
+
+1. Toggle text of  the button
+   1. text on button-->on
+   2. when click on button-->off
+
+
+2. 1. create 2 component -->Home and Dashbord showing some text like home page and dashbord page
+   2. one status usestate like isStatus-->false
+   2. use setTimeout in useeffect of 1sec 
+   4. when time out settimeout setstatus of isStatus to true
+   5. when true go to dashbord otherwise show homepage
+   
