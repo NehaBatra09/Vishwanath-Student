@@ -1,10 +1,13 @@
+import { Button } from "@mui/material";
 import { useAuth } from "../Context";
 
 const Header = ({ }) => {
-    const { logout, createTransaction } = useAuth();
+    const { logout } = useAuth();
     return (<>
-        <button onClick={logout}>Logout</button>
-        <button onClick={createTransaction}></button>
+        <Button type="submit"
+            variant="contained"
+            color="primary"
+            sx={{ marginTop: 2, padding: "20px" }} onClick={logout}>Log Out</Button>
     </>)
 }
 export default Header

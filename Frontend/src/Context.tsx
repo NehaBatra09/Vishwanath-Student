@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react"
 import { apis } from "./apis";
 import { useNavigate } from "react-router-dom";
-type transaction = {
+type account = {
     name: string,
     email: string,
     age: string,
@@ -13,14 +13,14 @@ type AuthContextData = {
     accounts: any;
     transactions: any;
     accountTypes: any;
-    newTransationDetails: transaction
+    newAccountDetails: account
     login: (name: string, password: string) => void;
     logout: () => void;
     getAccounts: (userId: number) => Promise<void>;
     getTransactionsByAccountId: (userId: number, accountId: number) => Promise<void>
     addNewAccount: () => Promise<void>;
     getAccountTypes: () => Promise<void>
-    setNewTransactionDetails: (details: transaction) => void;
+    setNewAccountDetails: (details: account) => void;
 };
 
 const AuthContext = createContext<AuthContextData | null>(null)
@@ -41,7 +41,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [accounts, setAccounts] = useState([])
     const [transactions, setTransactions] = useState([])
     const [accountTypes, setAccountTypes] = useState([])
-    const [newTransationDetails, setNewTransactionDetails] = useState<transaction>({ name: "", email: "", age: "", accountType: "" })
+    const [newAccountDetails, setNewAccountDetails] = useState<account>({ name: "", email: "", age: "", accountType: "" })
 
     const login = async (email: string, password: string) => {
         let { status, data, message } = await apis.post("login", { email, password })
@@ -77,9 +77,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const addNewAccount = async () => {
         let userId: string | null = localStorage.getItem("userId")
         console.log(userId)
-        let { status, data, message } = await apis.post("account/" + userId, newTransationDetails)
+        let { status, data, message } = await apis.post("account/" + userId, newAccountDetails)
         if (status) {
             setAccounts(data)
+            setNewAccountDetails({ name: "", email: "", age: "", accountType: "" })
+            alert("Account created succesfully ..")
+            window.location.href = "/accountView"
         } else {
         }
     }
@@ -100,7 +103,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 
     return (<>
-        <AuthContext.Provider value={{ user, isAuthenticated, accounts, accountTypes, transactions, newTransationDetails, login, logout, getAccounts, getTransactionsByAccountId, addNewAccount, getAccountTypes, setNewTransactionDetails }}>
+        <AuthContext.Provider value={{
+            user, isAuthenticated, accounts, accountTypes, transactions, newAccountDetails, login, logout, getAccounts, getTransactionsByAccountId, addNewAccount, getAccountTypes, setNewAccountDetails
+        }}>
             {children}
         </AuthContext.Provider>
 

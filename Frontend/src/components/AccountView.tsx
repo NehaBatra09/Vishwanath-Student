@@ -18,8 +18,16 @@ const AccountView: React.FC = () => {
     }
 
     return (<>
-        <Header />
-        <Button onClick={() => navigate("/accountForm")}>Create Account</Button>
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginBottom: "20px" }}>
+
+            <Button type="submit"
+                variant="contained"
+                color="primary"
+                sx={{ marginTop: 2, padding: "20px" }} onClick={() => navigate("/accountForm")}>Create Account</Button>
+            <Header />
+        </div>
+
+
         <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: "30px", justifyContent: "center", alignItems: "center" }}>
             {accounts.map((account: any) =>
                 <Card sx={{ minWidth: 275, background: "lightblue" }}>
@@ -45,6 +53,9 @@ const AccountView: React.FC = () => {
 
                         <Typography variant="body2">
                             Date:  {account.date}
+                        </Typography>
+                        <Typography variant="h5" component="div">
+                            AC/Stauts: {account.status}
                         </Typography>
                     </CardContent>
                     <CardActions>

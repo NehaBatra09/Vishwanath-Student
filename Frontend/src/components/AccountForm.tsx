@@ -2,7 +2,7 @@ import { Container, TextField, Button, Typography, Box, Select, MenuItem, InputL
 import { useAuth } from '../Context';
 import { useEffect } from 'react';
 const AccountForm: React.FC = () => {
-    let { accountTypes, newTransationDetails, setNewTransactionDetails, getAccountTypes, addNewAccount } = useAuth()
+    let { accountTypes, newAccountDetails, setNewAccountDetails, getAccountTypes, addNewAccount } = useAuth()
     useEffect(() => {
         getData()
     }, [])
@@ -27,16 +27,16 @@ const AccountForm: React.FC = () => {
                         label="Name"
                         variant="outlined"
                         margin="normal"
-                        onChange={(e) => setNewTransactionDetails({ ...newTransationDetails, name: e.target.value })}
+                        onChange={(e) => setNewAccountDetails({ ...newAccountDetails, name: e.target.value })}
                     />
                     <TextField
                         fullWidth
                         id="email"
                         label="Email"
-                        type="password"
+                        type="text"
                         variant="outlined"
                         margin="normal"
-                        onChange={(e) => setNewTransactionDetails({ ...newTransationDetails, email: e.target.value })}
+                        onChange={(e) => setNewAccountDetails({ ...newAccountDetails, email: e.target.value })}
                     />
                     <TextField
                         fullWidth
@@ -51,8 +51,8 @@ const AccountForm: React.FC = () => {
                             labelId="accountType"
                             id="accountType"
                             label="Account Type"
-                            value={newTransationDetails.accountType}
-                            onChange={(e) => setNewTransactionDetails({ ...newTransationDetails, accountType: e.target.value })}
+                            value={newAccountDetails.accountType}
+                            onChange={(e) => setNewAccountDetails({ ...newAccountDetails, accountType: e.target.value })}
                         >
                             {accountTypes.map((accountType: string, index: number) =>
                                 <MenuItem value={accountType}>{accountType}</MenuItem>
