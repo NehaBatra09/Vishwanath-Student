@@ -1,9 +1,14 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import { AuthProvider } from './Context';
+
 
 test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
+  render(
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+  const linkElement = screen.getByText(/Account/i);
   expect(linkElement).toBeInTheDocument();
 });
