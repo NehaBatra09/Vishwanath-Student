@@ -4,19 +4,17 @@ import { useAuth } from "../Context";
 import Header from "./Header";
 
 const Transactions: React.FC = () => {
-    const { transactions, getTransactionsByAccountId } = useAuth();
+    const context = useAuth();
     const location = useLocation()
 
     const userId: string | null = localStorage.getItem("userId")
     useEffect(() => {
-        if (userId) {
-            getData(parseInt(userId))
+        if (userId && context) {
+            context.getTransactionsByAccountId(parseInt(userId), location?.state?.acnumber)
         }
-    }, [])
+    }, [userId, context])
 
-    const getData = async (id: number) => {
-        await getTransactionsByAccountId(id, location?.state?.acnumber)
-    }
+
 
     return (<>
         <Header />
@@ -29,8 +27,8 @@ const Transactions: React.FC = () => {
                 </tr>
             </thead>
             <tbody>
-                {transactions.map((transaction: any) =>
-                    <tr>
+                {context && context.transactions.map((transaction: any) =>
+                    <tr key={transaction.acnumber}>
                         <td>{transaction.acnumber}</td>
                         <td>{transaction.total}</td>
                         <td>{transaction?.credit} {transaction?.debit}</td>

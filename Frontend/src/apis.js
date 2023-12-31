@@ -4,17 +4,15 @@ export const apis = {
     get: async function (url) {
         let res = await fetch(baseUrl + url)
         let response = await res.json()
-        console.log(response)
         if (response.status) {
-            return { status: true, data: response.data, message: response.message }
+            return { status: true, data: response.data, message: "Success" }
         }
         else {
-            return { status: false, code: response.status, message: "Something went wrong." }
+            return { status: false, code: false, message: "Something went wrong." }
         }
 
     },
     post: async function (url, payload) {
-        console.log(payload)
         const config = {
             method: "POST",
             headers: {
@@ -24,12 +22,11 @@ export const apis = {
         }
         let res = await fetch(baseUrl + url, config)
         let response = await res.json()
-        console.log(response)
         if (response.status) {
             return { status: true, data: response.data, message: response.message }
         }
         else {
-            return { status: false, code: response.status, message: response.message }
+            return { status: false, code: false, message: response.message }
         }
 
     }

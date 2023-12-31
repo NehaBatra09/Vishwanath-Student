@@ -1,61 +1,50 @@
 import React, { createContext, useContext, useState } from "react"
 import { apis } from "./apis";
-import { useNavigate } from "react-router-dom";
 type account = {
+    acnumber: string,
     name: string,
     email: string,
-    age: string,
-    accountType: string
+    age: number,
+    accountType: string,
+    date: string,
+    status: string
 }
 type AuthContextData = {
     isAuthenticated: boolean;
     user: any;
-    accounts: any;
+    accounts: [{ acnumber: string; accountType: string; name: string; email: string; age: number; date: string; status: string; }];
     transactions: any;
-    accountTypes: any;
-    newAccountDetails: account
     login: (name: string, password: string) => void;
     logout: () => void;
     getAccounts: (userId: number) => Promise<void>;
     getTransactionsByAccountId: (userId: number, accountId: number) => Promise<void>
-    addNewAccount: () => Promise<void>;
-    getAccountTypes: () => Promise<void>
-    setNewAccountDetails: (details: account) => void;
+    addNewAccount: (accountDetails: account) => Promise<void>;
 };
 
-const AuthContext = createContext<AuthContextData | null>(null)
+export const AuthContext = createContext<AuthContextData | null>(null)
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
     return context;
 };
 interface AuthProviderProps {
     children: React.ReactNode;
 }
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+
+const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [user, setUser] = useState(null)
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [accounts, setAccounts] = useState([])
+    const [accounts, setAccounts] = useState<[{ acnumber: string; accountType: string; name: string; email: string; age: number; date: string; status: string; }]>([{ acnumber: "", accountType: "", name: "", email: "", age: 0, date: "", status: "" }])
     const [transactions, setTransactions] = useState([])
-    const [accountTypes, setAccountTypes] = useState([])
-    const [newAccountDetails, setNewAccountDetails] = useState<account>({ name: "", email: "", age: "", accountType: "" })
 
     const login = async (email: string, password: string) => {
-        let { status, data, message } = await apis.post("login", { email, password })
-        if (status) {
-            if (!localStorage.getItem("userId")) {
-                localStorage.setItem("userId", data.id)
-            }
-            setUser(data)
-            setIsAuthenticated(true);
-            alert("Login succes!")
-        } else {
-            alert(message)
-            setIsAuthenticated(false);
+        let { status, data } = await apis.post("login", { email, password })
+        if (!localStorage.getItem("userId")) {
+            localStorage.setItem("userId", data.id)
         }
+        setUser(data)
+        setIsAuthenticated(status);
+
     };
 
     const logout = () => {
@@ -66,48 +55,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     };
     const getAccounts = async (userId: number) => {
-        console.log(userId)
-        let { status, data, message } = await apis.get("account/" + userId)
-        console.log(status, data)
-        if (status) {
-            setAccounts(data)
-        } else {
-        }
+        let { data } = await apis.get("account/" + userId)
+        setAccounts(data)
+
     }
-    const addNewAccount = async () => {
+    const addNewAccount = async (accountDetails: account) => {
         let userId: string | null = localStorage.getItem("userId")
-        console.log(userId)
-        let { status, data, message } = await apis.post("account/" + userId, newAccountDetails)
-        if (status) {
-            setAccounts(data)
-            setNewAccountDetails({ name: "", email: "", age: "", accountType: "" })
-            alert("Account created succesfully ..")
-            window.location.href = "/accountView"
-        } else {
-        }
+        let { data } = await apis.post("account/" + userId, accountDetails)
+        setAccounts(data)
+        window.location.href = "/accountView"
     }
     const getTransactionsByAccountId = async (userId: number, accountId: number) => {
         setTransactions([])
-        let { status, data, message } = await apis.get(`transactions/${userId}/${accountId}`)
-        if (status) {
-            setTransactions(data)
-        } else {
-        }
-    }
-    const getAccountTypes = async () => {
-        let { status, data, message } = await apis.get("accountTypes")
-        if (status) {
-            setAccountTypes(data)
-        }
+        let { data } = await apis.get(`transactions/${userId}/${accountId}`)
+        setTransactions(data)
+
     }
 
 
     return (<>
         <AuthContext.Provider value={{
-            user, isAuthenticated, accounts, accountTypes, transactions, newAccountDetails, login, logout, getAccounts, getTransactionsByAccountId, addNewAccount, getAccountTypes, setNewAccountDetails
+            user, isAuthenticated, accounts, transactions, login, logout, getAccounts, getTransactionsByAccountId, addNewAccount
         }}>
             {children}
         </AuthContext.Provider>
 
     </>)
 }
+export default AuthProvider

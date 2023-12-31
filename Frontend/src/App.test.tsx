@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
-import { AuthProvider } from './Context';
+import AuthProvider from './Context';
 
 
 test('renders learn react link', () => {

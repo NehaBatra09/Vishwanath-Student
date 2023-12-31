@@ -1,21 +1,19 @@
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { useAuth } from "../Context";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import { Button, Card, CardActions, CardContent, Typography } from "@mui/material"
 const AccountView: React.FC = () => {
-    const { accounts, getAccounts } = useAuth();
+    const context = useAuth();
     const userId: string | null = localStorage.getItem("userId")
     const navigate = useNavigate()
     useEffect(() => {
-        if (userId) {
-            getData(parseInt(userId))
+        if (userId && context) {
+            context.getAccounts(parseInt(userId))
         }
-    }, [])
+    }, [userId, context])
 
-    const getData = async (id: number) => {
-        await getAccounts(id)
-    }
+
 
     return (<>
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginBottom: "20px" }}>
@@ -29,8 +27,8 @@ const AccountView: React.FC = () => {
 
 
         <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: "30px", justifyContent: "center", alignItems: "center" }}>
-            {accounts.map((account: any) =>
-                <Card sx={{ minWidth: 275, background: "lightblue" }}>
+            {context && context.accounts.map((account: any, index: number) =>
+                <Card key={index} sx={{ minWidth: 275, background: "lightblue" }}>
                     <CardContent>
                         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                             AC/No: {account.acnumber}
@@ -39,7 +37,7 @@ const AccountView: React.FC = () => {
                             AC/Type: {account.accountType}
                         </Typography>
                         <Typography variant="body2">
-                            Name: {account.Name}
+                            Name: {account.name}
 
                         </Typography>
 
@@ -64,31 +62,7 @@ const AccountView: React.FC = () => {
                 </Card>
             )}
         </div>
-        {/* <table style={{ marginLeft: "300px" }}>
-            <thead>
-                <tr>
-                    <th>Account Number</th>
-                    <th>Account Type</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Age</th>
-                    <th>Account Date</th>
-                </tr>
-            </thead>
-            <tbody>
-               
-                    <tr >
-                        <td></td>
-                        <td>{account.accountType}</td>
-                        <td>{account.name}</td>
-                        <td>{account.email}</td>
-                        <td>{account.age}</td>
-                        <td>{account.date}</td>
 
-                    </tr>
-                )}
-            </tbody>
-        </table> */}
     </>)
 }
 
