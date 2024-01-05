@@ -139,7 +139,7 @@ const AccountForm: React.FC = () => {
                 </FormControl>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={['DatePicker']}>
-                        <DatePicker label="Basic date picker" onChange={(e: any) => setNewAccountDetails({ ...accountDetails, date: e.date })} />
+                        <DatePicker label="Basic date picker" onChange={(e: any) => setNewAccountDetails({ ...accountDetails, date: e })} />
                     </DemoContainer>
                 </LocalizationProvider>
                 <Button
