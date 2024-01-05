@@ -29,26 +29,26 @@ const AccountView: React.FC = () => {
                 <Card key={index} sx={{ minWidth: 275, background: "lightblue" }}>
                     <CardContent>
                         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            AC/No: {account.id}
+                            AC/No: {account?.id}
                         </Typography>
                         <Typography variant="h5" component="div">
-                            AC/Type: {account.accountType}
+                            AC/Type: {account?.accountType}
                         </Typography>
                         <Typography variant="body2">
-                            Name: {account.name}
+                            Name: {account?.name}
 
                         </Typography>
 
                         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                            Email: {account.email}
+                            Email: {account?.email}
                         </Typography>
                         <Typography variant="body2">
-                            Age:  {account.age}
+                            Age:  {account?.age}
 
                         </Typography>
 
                         <Typography variant="body2">
-                            Date:  {new Date(account.date).toDateString()}
+                            Date:  {new Date(account?.date).toDateString()}
                         </Typography>
                         <Typography variant="body2">
                             Addrss: {account?.address}
@@ -57,13 +57,13 @@ const AccountView: React.FC = () => {
                             Branch: {account?.branch}
                         </Typography>
                         <Typography variant="h5" component="div">
-                            AC/Stauts: {account.status}
+                            AC/Stauts: {account?.status}
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Button disabled={!account.isTransactions} size="small" onClick={() =>
+                        <Button disabled={!account?.isTransactions} size="small" onClick={() =>
                             navigate(`/transactions`, {
-                                state: { acnumber: account.id }
+                                state: { acnumber: account?.id }
                             })}>Go To Details</Button>
                     </CardActions>
                 </Card>

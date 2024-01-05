@@ -4,10 +4,13 @@ import { useAuth } from "../Context";
 const Header = ({ }) => {
     const context = useAuth();
     return (<>
+        {localStorage.getItem("email")}
         <Button type="submit"
             variant="contained"
             color="primary"
             sx={{ marginTop: 2, padding: "20px" }} onClick={() => context.logout()}>Log Out</Button>
+
     </>)
+
 }
 export default Header

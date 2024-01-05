@@ -26,7 +26,7 @@ const AccountForm: React.FC = () => {
         if (context) {
             context.addNewAccount(accountDetails)
         }
-        navigate("/accountView")
+
     }
 
     return (<>

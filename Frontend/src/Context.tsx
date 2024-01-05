@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { apis } from "./apis";
 import { useNavigate } from "react-router-dom";
+import { alphaWithSpecialChars, extractAlphanumeric, isNumber, isValidEmail } from "./components/validate";
 type account = {
     id: string;
     address: string;
@@ -60,6 +61,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         let { status, data } = await apis.post("login", { email, password })
         if (!localStorage.getItem("userId")) {
             localStorage.setItem("userId", data.id)
+            localStorage.setItem("email", data.email)
         }
         if (status) {
             setUser(data)
@@ -78,17 +80,51 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         navigate("/")
     };
     const getAccounts = async (userId: string) => {
-        let { data } = await apis.get("account/" + userId)
-        setAccounts(data)
+        let myaccounts = await apis.get("account/" + userId)
+        let accountData: string | null = localStorage.getItem("accountData")
+        if (accountData !== null) {
+            let newData: any = JSON.parse(accountData)
+            console.log(newData)
+            for (let i = 0; i <= newData.length; i++) {
+                if (newData[i] != undefined) {
+                    myaccounts.data.push(newData[i])
+                }
+            }
+        }
+        console.log(myaccounts.data)
+        setAccounts(myaccounts.data)
+
 
     }
     const addNewAccount = async (accountDetails: account) => {
         const { id, address, branch, date, name, age, email } = accountDetails
-        if (id == "" && address == "" && branch == "" && date == "" && name == "" && age == "" && email == "") {
+        if (id == "" || address == "" || branch == "" || date == "" || name == "" && age == "" || email == "") {
             alert("All Fields are required.")
         } else {
-            let userId: string | null = localStorage.getItem("userId")
-            let { data, status } = await apis.post("account/" + userId, accountDetails)
+            if (!alphaWithSpecialChars(id) || !extractAlphanumeric(name) || !isNumber(age) || !isValidEmail(email)) {
+                alert("Data fields are incorrect. Please check..")
+            } else {
+                let userId: string | null = localStorage.getItem("userId")
+                let { data, status } = await apis.post("account/" + userId, accountDetails)
+                if (localStorage.getItem("accountData") == undefined) {
+                    localStorage.setItem("accountData", JSON.stringify([data]))
+                } else {
+
+                    let account = localStorage.getItem("accountData")
+
+                    if (account) {
+                        let newDT = JSON.parse(account)
+                        newDT.push(data)
+
+                        console.log(newDT)
+                        localStorage.removeItem("accountData")
+                        localStorage.setItem("accountData", JSON.stringify(newDT))
+                    }
+
+
+                }
+                navigate("/accountView")
+            }
 
         }
     }

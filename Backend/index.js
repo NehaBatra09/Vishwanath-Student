@@ -59,10 +59,10 @@ app.post("/account/:userId", (req, res) => {
     let { name, age, email, address, branch, id, date } = req.body
     let findUser = users.find((user) => user.id == userId)
     console.log(findUser)
-    if (findUser) {
-        accountDetails.push({ id, userId, name, age, email, address, branch, date, status: "pending" })
-    }
-    res.send(201, { status: true, message: "success", data: accountDetails })
+    // if (findUser) {
+    //     accountDetails.push({ id, userId, name, age, email, address, branch, date, status: "pending" })
+    // }
+    res.send(201, { status: true, message: "success", data: req.body })
 })
 app.get("/transactions/:userId/:accountId", (req, res) => {
     let { userId, accountId } = req.params
