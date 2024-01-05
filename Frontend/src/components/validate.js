@@ -15,20 +15,13 @@ export function isValidId(id) {
     return (id.length >= 8 && extractAlphanumeric(id))
 }
 export function extractAlphanumeric(text) {
-    const alphanumericRegex = /[a-zA-Z0-9]+/g;
 
-    const alphanumericArray = text.match(alphanumericRegex);
+    const alphaNumericRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$/;
 
-    const alphanumericText = alphanumericArray ? alphanumericArray.join('') : '';
-
-    return alphanumericText;
+    return alphaNumericRegex.test(text);
 }
 export function alphaWithSpecialChars(text) {
-    const alphanumericRegex = /[a-zA-Z0-9@#$]+/g;
+    const alphanumericRegex = /^(?=.*[a-zA-Z0-9])(?=.*[@#$]).*$/;
 
-    const alphanumericArray = text.match(alphanumericRegex);
-
-    const alphanumericText = alphanumericArray ? alphanumericArray.join('') : '';
-
-    return alphanumericText;
+    return !text || (alphanumericRegex.test(text) && text.length >= 8);
 }

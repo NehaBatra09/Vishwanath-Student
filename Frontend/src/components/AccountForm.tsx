@@ -58,11 +58,9 @@ const AccountForm: React.FC = () => {
                     id="name"
                     variant="outlined"
                     margin="normal"
-                    onChange={(e: any) => {
-
-                        setNewAccountDetails({ ...accountDetails, name: e.target.value }
-                        )
-                    }}
+                    onChange={(e: any) => setNewAccountDetails({ ...accountDetails, name: e.target.value }
+                    )
+                    }
                     required
                     error={!extractAlphanumeric(accountDetails.name) && accountDetails.name != ""}
                     helperText={(!extractAlphanumeric(accountDetails.name) && accountDetails.name != "") ? "Name Should be alphanumeric" : ""}
