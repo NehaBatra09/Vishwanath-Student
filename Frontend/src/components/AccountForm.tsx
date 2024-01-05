@@ -5,7 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { DatePicker } from '@mui/x-date-pickers';
 import { useAuth } from '../Context';
 import React, { useState } from 'react';
-import { isAlphanumeric, isNumber, isValidEmail, isValidId } from './validate';
+import { extractAlphanumeric, alphaWithSpecialChars, isNumber, isValidEmail } from './validate';
 import { useNavigate } from 'react-router-dom';
 const AccountForm: React.FC = () => {
     const navigate = useNavigate()
@@ -48,8 +48,8 @@ const AccountForm: React.FC = () => {
                         )
                     }}
                     required
-                    error={!isValidId(accountDetails.id) && accountDetails.id != ""}
-                    helperText={(!isValidId(accountDetails.id) && accountDetails.id != "") ? "Id length shoule be greater than 8" : ""}
+                    error={!alphaWithSpecialChars(accountDetails.id) && accountDetails.id != ""}
+                    helperText={(!alphaWithSpecialChars(accountDetails.id) && accountDetails.id != "") ? "Id length shoule be greater than 8" : ""}
                 />
                 <TextField
 
@@ -64,8 +64,8 @@ const AccountForm: React.FC = () => {
                         )
                     }}
                     required
-                    error={!isAlphanumeric(accountDetails.name) && accountDetails.name != ""}
-                    helperText={(!isAlphanumeric(accountDetails.name) && accountDetails.name != "") ? "Name Should be alphanumeric" : ""}
+                    error={!extractAlphanumeric(accountDetails.name) && accountDetails.name != ""}
+                    helperText={(!extractAlphanumeric(accountDetails.name) && accountDetails.name != "") ? "Name Should be alphanumeric" : ""}
                 />
                 <TextField
                     required
