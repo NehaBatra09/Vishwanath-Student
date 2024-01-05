@@ -1,9 +1,15 @@
 import { Container, TextField, Button, Typography, Box, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { DatePicker } from '@mui/x-date-pickers';
 import { useAuth } from '../Context';
 import React, { useState } from 'react';
+import { isAlphanumeric, isNumber, isValidEmail, isValidId } from './validate';
+import { useNavigate } from 'react-router-dom';
 const AccountForm: React.FC = () => {
-
-    const [accountDetails, setNewAccountDetails] = useState({ name: "", email: "", age: 0, accountType: "ac1", acnumber: "", date: "", status: "" })
+    const navigate = useNavigate()
+    const [accountDetails, setNewAccountDetails] = useState({ id: "", name: "", email: "", age: "", accountType: "ac1", date: "", address: "", branch: "", status: "" })
     const context = useAuth()
     const [accountTypes] = useState(["ac1",
         "ac2",
@@ -13,10 +19,14 @@ const AccountForm: React.FC = () => {
         "ac6",
         "ac7",
         "ac8"])
+
     const handleSubmit = () => {
+
+
         if (context) {
             context.addNewAccount(accountDetails)
         }
+        navigate("/accountView")
     }
 
     return (<>
@@ -26,40 +36,93 @@ const AccountForm: React.FC = () => {
                     Account Form
                 </Typography>
                 <TextField
+
+                    label="Id"
                     fullWidth
-                    id="name"
-                    label="Name"
+                    id="id"
                     variant="outlined"
                     margin="normal"
-                    onChange={(e) => {
-                        const input = e.target.value;
-                        const alphanumericInput = input.replace(/[^a-zA-Z0-9]/g, '');
-                        setNewAccountDetails({ ...accountDetails, name: alphanumericInput }
+                    onChange={(e: any) => {
+
+                        setNewAccountDetails({ ...accountDetails, id: e.target.value }
                         )
                     }}
+                    required
+                    error={!isValidId(accountDetails.id) && accountDetails.id != ""}
+                    helperText={(!isValidId(accountDetails.id) && accountDetails.id != "") ? "Id length shoule be greater than 8" : ""}
                 />
                 <TextField
+
+                    label="Name"
+                    fullWidth
+                    id="name"
+                    variant="outlined"
+                    margin="normal"
+                    onChange={(e: any) => {
+
+                        setNewAccountDetails({ ...accountDetails, name: e.target.value }
+                        )
+                    }}
+                    required
+                    error={!isAlphanumeric(accountDetails.name) && accountDetails.name != ""}
+                    helperText={(!isAlphanumeric(accountDetails.name) && accountDetails.name != "") ? "Name Should be alphanumeric" : ""}
+                />
+                <TextField
+                    required
                     fullWidth
                     id="email"
                     label="Email"
                     type="text"
                     variant="outlined"
                     margin="normal"
-                    onChange={(e) => setNewAccountDetails({ ...accountDetails, email: e.target.value })}
+                    error={!isValidEmail(accountDetails.email) && accountDetails.email != ""}
+                    helperText={(!isValidEmail(accountDetails.email) && accountDetails.email != "") && "Email Should valid."}
+                    onChange={(e: any) => setNewAccountDetails({ ...accountDetails, email: e.target.value })}
                 />
                 <TextField
                     fullWidth
+                    required
                     id="age"
                     label="Age"
                     variant="outlined"
                     margin="normal"
-                    onChange={(e) => {
-                        const input = e.target.value;
-                        const numericInput = input.replace(/\D/g, ''); // Filter non-numeric characters
-                        setNewAccountDetails({ ...accountDetails, age: parseInt(numericInput) }
+                    error={!isNumber(accountDetails.age) && accountDetails.age != ""}
+                    helperText={(!isNumber(accountDetails.age) && accountDetails.age != "") && "Age should be in numbers"}
+                    onChange={(e: any) => {
+
+                        setNewAccountDetails({ ...accountDetails, age: e.target.value }
                         )
                     }}
                 />
+                <TextField
+
+                    label="Address"
+                    fullWidth
+                    id="address"
+                    variant="outlined"
+                    margin="normal"
+                    onChange={(e: any) => {
+
+                        setNewAccountDetails({ ...accountDetails, address: e.target.value }
+                        )
+                    }}
+                    required
+                />
+                <TextField
+
+                    label="branch"
+                    fullWidth
+                    id="branch"
+                    variant="outlined"
+                    margin="normal"
+                    onChange={(e: any) => {
+
+                        setNewAccountDetails({ ...accountDetails, branch: e.target.value }
+                        )
+                    }}
+                    required
+                />
+
                 <FormControl fullWidth margin="normal">
                     <InputLabel id="accountType">Account Type</InputLabel>
                     <Select
@@ -67,13 +130,18 @@ const AccountForm: React.FC = () => {
                         id="accountType"
                         label="Account Type"
                         value={accountDetails.accountType}
-                        onChange={(e) => setNewAccountDetails({ ...accountDetails, accountType: e.target.value })}
+                        onChange={(e: any) => setNewAccountDetails({ ...accountDetails, accountType: e.target.value })}
                     >
                         {accountTypes?.map((accountType: string, index: number) =>
                             <MenuItem key={index} value={accountType}>{accountType}</MenuItem>
                         )}
                     </Select>
                 </FormControl>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={['DatePicker']}>
+                        <DatePicker label="Basic date picker" onChange={(e: any) => setNewAccountDetails({ ...accountDetails, date: e.date })} />
+                    </DemoContainer>
+                </LocalizationProvider>
                 <Button
                     type="submit"
                     variant="contained"
@@ -86,7 +154,6 @@ const AccountForm: React.FC = () => {
                 </Button>
             </Box>
         </Container>
-
     </>)
 }
 

@@ -1,3 +1,4 @@
+import AuthProvider from "../Context"
 import Login from "../Login"
 interface Compo {
     children: React.ReactNode
@@ -8,7 +9,11 @@ const MainRoute: React.FC<Compo> = ({ children }) => {
     if (userId == undefined) {
         return <Login />
     } else {
-        return (<>{children}</>)
+        return (<>
+            <AuthProvider>
+                {children}
+            </AuthProvider >
+        </>)
     }
 }
 

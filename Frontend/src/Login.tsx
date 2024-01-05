@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { Container, TextField, Button, Typography, Box, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import { useAuth } from './Context';
+
+
 const Login: React.FC = () => {
     const context = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
+
         if (context) {
             context.login(email, password)
         }
@@ -16,32 +20,46 @@ const Login: React.FC = () => {
         }
     }, [context])
     return (
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
 
-            <div style={{ margin: "40px", fontSize: "25px" }}>
-                <input
-                    style={{ padding: "15px" }}
+        <Container maxWidth="sm">
+            <Box sx={{ marginTop: 8 }}>
+                <Typography variant="h4" align="center" gutterBottom>
+                    Login Form
+                </Typography>
+
+                <TextField
+                    fullWidth
+                    id="name"
+                    label="Name"
                     type="text"
-                    id="username"
-                    value={email}
+                    variant="outlined"
+                    margin="normal"
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder='Enter UserName'
                 />
-            </div>
-            <div style={{ margin: "40px" }}>
-                <input
-                    style={{ padding: "15px" }}
-                    type="password"
+                <TextField
+                    fullWidth
                     id="password"
-                    value={password}
+                    label="Password"
+                    type="password"
+                    variant="outlined"
+                    margin="normal"
                     placeholder='Enter Password'
                     onChange={(e) => setPassword(e.target.value)}
                 />
-            </div>
-            <div style={{ display: "flex", justifyContent: "center", margin: "30px" }}>
-                <button type="submit" onClick={() => handleLogin()}>Login</button>
-            </div>
-        </div>
+
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    sx={{ marginTop: 2, padding: "20px" }}
+                    onClick={() => handleLogin()}
+                >
+                    Login
+                </Button>
+            </Box>
+        </Container>
     );
 };
 

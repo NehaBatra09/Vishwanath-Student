@@ -10,8 +10,9 @@ const Transactions: React.FC = () => {
     const userId: string | null = localStorage.getItem("userId")
     useEffect(() => {
         if (userId && context) {
-            context.getTransactionsByAccountId(parseInt(userId), location?.state?.acnumber)
+            context.getTransactionsByAccountId(userId, location?.state?.acnumber)
         }
+
     }, [userId, context])
 
 
@@ -27,7 +28,7 @@ const Transactions: React.FC = () => {
                 </tr>
             </thead>
             <tbody>
-                {context && context.transactions.map((transaction: any) =>
+                {context && context?.transactions.map((transaction: any) =>
                     <tr key={transaction.acnumber}>
                         <td>{transaction.acnumber}</td>
                         <td>{transaction.total}</td>

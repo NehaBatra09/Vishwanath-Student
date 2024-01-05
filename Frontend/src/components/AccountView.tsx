@@ -9,11 +9,9 @@ const AccountView: React.FC = () => {
     const navigate = useNavigate()
     useEffect(() => {
         if (userId && context) {
-            context.getAccounts(parseInt(userId))
+            context.getAccounts(userId)
         }
-    }, [userId, context])
-
-
+    }, [])
 
     return (<>
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginBottom: "20px" }}>
@@ -27,11 +25,11 @@ const AccountView: React.FC = () => {
 
 
         <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: "30px", justifyContent: "center", alignItems: "center" }}>
-            {context && context.accounts.map((account: any, index: number) =>
+            {context && context?.accounts?.map((account: any, index: number) =>
                 <Card key={index} sx={{ minWidth: 275, background: "lightblue" }}>
                     <CardContent>
                         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            AC/No: {account.acnumber}
+                            AC/No: {account.id}
                         </Typography>
                         <Typography variant="h5" component="div">
                             AC/Type: {account.accountType}
@@ -50,18 +48,27 @@ const AccountView: React.FC = () => {
                         </Typography>
 
                         <Typography variant="body2">
-                            Date:  {account.date}
+                            Date:  {new Date(account.date).toDateString()}
+                        </Typography>
+                        <Typography variant="body2">
+                            Addrss: {account?.address}
+                        </Typography>
+                        <Typography variant="body2">
+                            Branch: {account?.branch}
                         </Typography>
                         <Typography variant="h5" component="div">
                             AC/Stauts: {account.status}
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Button size="small" onClick={() => navigate(`/transactions`, { state: { acnumber: account.acnumber } })}>Go To Details</Button>
+                        <Button disabled={!account.isTransactions} size="small" onClick={() =>
+                            navigate(`/transactions`, {
+                                state: { acnumber: account.id }
+                            })}>Go To Details</Button>
                     </CardActions>
                 </Card>
             )}
-        </div>
+        </div >
 
     </>)
 }

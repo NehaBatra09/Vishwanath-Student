@@ -1,34 +1,41 @@
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useEffect, useState } from "react"
 import { apis } from "./apis";
+import { useNavigate } from "react-router-dom";
 type account = {
-    acnumber: string,
-    name: string,
-    email: string,
-    age: number,
-    accountType: string,
-    date: string,
-    status: string
+    id: string;
+    address: string;
+    branch: string;
+    date: string;
+    accountType: string;
+    name: string;
+    email: string;
+    status: string;
+    age: string;
+
+
 }
 type AuthContextData = {
     isAuthenticated: boolean;
     user: any;
-    accounts: [{ acnumber: string; accountType: string; name: string; email: string; age: number; date: string; status: string; }];
+    accounts: [
+        account
+    ];
     transactions: any;
-    login: (name: string, password: string) => void;
+    login: (email: string, password: string) => void;
     logout: () => void;
-    getAccounts: (userId: number) => Promise<void>;
-    getTransactionsByAccountId: (userId: number, accountId: number) => Promise<void>
+    getAccounts: (userId: string) => Promise<void>;
+    getTransactionsByAccountId: (userId: string, accountId: string) => Promise<void>
     addNewAccount: (accountDetails: account) => Promise<void>;
 };
 const initialAuthContextData: AuthContextData = {
     isAuthenticated: false,
     user: null,
-    accounts: [{ acnumber: "", accountType: "", name: "", email: "", age: 0, date: "", status: "" }],
+    accounts: [{ id: "", address: "", branch: "", date: "", accountType: "", name: "", email: "", age: "", status: "" }],
     transactions: null,
     login: (name: string, password: string) => { },
     logout: () => { },
-    getAccounts: async (userId: number) => { },
-    getTransactionsByAccountId: async (userId: number, accountId: number) => { },
+    getAccounts: async (userId: string) => { },
+    getTransactionsByAccountId: async (userId: string, accountId: string) => { },
     addNewAccount: async (accountDetails: account) => { },
 };
 export const AuthContext = createContext<AuthContextData>(initialAuthContextData)
@@ -44,15 +51,22 @@ interface AuthProviderProps {
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [user, setUser] = useState(null)
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [accounts, setAccounts] = useState<[{ acnumber: string; accountType: string; name: string; email: string; age: number; date: string; status: string; }]>([{ acnumber: "", accountType: "", name: "", email: "", age: 0, date: "", status: "" }])
+    const [accounts, setAccounts] = useState<[account]>([{ id: "", accountType: "", name: "", email: "", age: "", date: "", status: "", address: "", branch: "" }])
     const [transactions, setTransactions] = useState([])
+    const navigate = useNavigate()
 
     const login = async (email: string, password: string) => {
+
         let { status, data } = await apis.post("login", { email, password })
         if (!localStorage.getItem("userId")) {
             localStorage.setItem("userId", data.id)
         }
-        setUser(data)
+        if (status) {
+            setUser(data)
+            alert("Login Success.")
+        } else {
+            alert("UserName and Password does not match.")
+        }
         setIsAuthenticated(status);
 
     };
@@ -61,25 +75,26 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.clear()
         setUser(null)
         setIsAuthenticated(false);
-        window.location.href = "/"
-
+        navigate("/")
     };
-    const getAccounts = async (userId: number) => {
+    const getAccounts = async (userId: string) => {
         let { data } = await apis.get("account/" + userId)
         setAccounts(data)
 
     }
     const addNewAccount = async (accountDetails: account) => {
-        let userId: string | null = localStorage.getItem("userId")
-        let { data } = await apis.post("account/" + userId, accountDetails)
-        setAccounts(data)
-        window.location.href = "/accountView"
+        const { id, address, branch, date, name, age, email } = accountDetails
+        if (id == "" && address == "" && branch == "" && date == "" && name == "" && age == "" && email == "") {
+            alert("All Fields are required.")
+        } else {
+            let userId: string | null = localStorage.getItem("userId")
+            let { data, status } = await apis.post("account/" + userId, accountDetails)
+
+        }
     }
-    const getTransactionsByAccountId = async (userId: number, accountId: number) => {
-        setTransactions([])
+    const getTransactionsByAccountId = async (userId: string, accountId: string) => {
         let { data } = await apis.get(`transactions/${userId}/${accountId}`)
         setTransactions(data)
-
     }
 
 
