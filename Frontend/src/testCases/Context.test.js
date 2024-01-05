@@ -1,7 +1,9 @@
 import React from 'react';
 import { render, act } from '@testing-library/react';
-import AuthProvider, { useAuth } from '../Context';
+import AuthProvider, { AuthContext, useAuth } from '../Context';
 import { apis } from '../apis'; // Replace with suitable mocks
+import AccountForm from '../components/AccountForm';
+import Transactions from '../components/Transactions';
 
 jest.mock('../apis', () => ({
     apis: {
@@ -90,5 +92,52 @@ describe('Auth Context', () => {
         // Add assertions based on expected behavior after logout
     });
 
+    test('fetches and sets accounts correctly', async () => {
+        const mockAccountsData = [
+            {
+                acnumber: '123',
+                accountType: 'Savings',
+                name: 'John Doe',
+                email: 'johndoe@example.com',
+                age: 30,
+                date: '2023-01-01',
+                status: 'Active',
+            },
+        ];
+
+        // Mocking the API response
+        const mockGetApi = jest.fn().mockResolvedValue({ data: mockAccountsData });
+        require('../apis').apis.get.mockImplementation(mockGetApi);
+        let result;
+        const TestComponent = () => {
+            result = useAuth(); // Using useAuth hook here
+            return null;
+        };
+
+        render(
+            <AuthContext.Provider value={{
+                getAccounts: mockGetApi, // Mocking getAccounts with the mock function
+                accounts: [{
+                    acnumber: '123',
+                    accountType: 'Savings',
+                    name: 'John Doe',
+                    email: 'johndoe@example.com',
+                    age: 30,
+                    date: '2023-01-01',
+                    status: 'Active',
+                },], // You might need to provide an initial value for accounts here
+            }}
+            >
+                <TestComponent />
+            </AuthContext.Provider>
+        );
+
+        await act(async () => {
+            await result.getAccounts(1); // This should call the mocked getAccounts
+        });
+
+        expect(mockGetApi).toHaveBeenCalled(); // Ensure the mock function was called
+        expect(result.accounts).toEqual(mockAccountsData);
+    });
     // More test cases covering getAccounts, addNewAccount, getTransactionsByAccountId, etc.
 });

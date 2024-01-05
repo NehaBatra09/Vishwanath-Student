@@ -11,4 +11,5 @@ const MainRoute: React.FC<Compo> = ({ children }) => {
         return (<>{children}</>)
     }
 }
+
 export default MainRoute

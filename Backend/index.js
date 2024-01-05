@@ -1,8 +1,11 @@
 const express = require("express")
 const app = express()
 const cors = require("cors")
+const generatedID = require("./utility")
 app.use(express.json())
 app.use(cors("*"))
+
+
 var accountTypes = [
     "ac1",
     "ac2",
@@ -20,9 +23,9 @@ var users = [
 
 ]
 var accountDetails = [
-    { acnumber: 1, userId: 1, email: "kavita1@gmail.com", name: "kavita1", age: 31, date: "2023-12-20T05:40:30.207Z", accountType: "ac1", status: "active" },
-    { acnumber: 2, userId: 1, email: "kavita2@gmail.com", name: "kavita2", age: 32, date: "2023-12-20T05:40:30.207Z", accountType: "ac2", status: "active" },
-    { acnumber: 3, userId: 1, email: "kavita3@gmail.com", name: "kavita3", age: 31, date: "2023-12-20T05:40:30.207Z", accountType: "ac3", status: "active" },
+    { acnumber: "andprst1", userId: 1, email: "kavita1@gmail.com", name: "kavita1", age: 31, date: "2023-12-20T05:40:30.207Z", accountType: "ac1", status: "active" },
+    { acnumber: "andprst1", userId: 1, email: "kavita2@gmail.com", name: "kavita2", age: 32, date: "2023-12-20T05:40:30.207Z", accountType: "ac2", status: "active" },
+    { acnumber: "andprst1", userId: 1, email: "kavita3@gmail.com", name: "kavita3", age: 31, date: "2023-12-20T05:40:30.207Z", accountType: "ac3", status: "active" },
     { acnumber: 4, userId: 1, email: "kavita4@gmail.com", name: "kavita4", age: 32, date: "2023-12-20T05:40:30.207Z", accountType: "ac4", status: "active" },
     { acnumber: 5, userId: 1, email: "kavita5@gmail.com", name: "kavita5", age: 31, date: "2023-12-20T05:40:30.207Z", accountType: "ac5", status: "active" },
     { acnumber: 6, userId: 1, email: "kavita6@gmail.com", name: "kavita6", age: 32, date: "2023-12-20T05:40:30.207Z", accountType: "ac6", status: "active" },
@@ -54,7 +57,7 @@ app.post("/account/:userId", (req, res) => {
     let { name, email, age, accountType } = req.body
     let findUser = users.find((user) => user.id == userId)
     if (findUser) {
-        accountDetails.push({ acnumber: accountDetails.length + 1, userId, name, email, age, accountType, date: new Date(), status: "pending" })
+        accountDetails.push({ acnumber: generatedID, userId, name, email, age, accountType, date: new Date(), status: "pending" })
     }
     res.send(201, { status: true, message: "success" })
 })
@@ -78,5 +81,7 @@ app.get("/account/:userId", (req, res) => {
 app.get("/accountTypes", (req, res) => {
     res.send(200, { data: accountTypes, status: true, message: "success" })
 })
+
+
 
 app.listen(4000)

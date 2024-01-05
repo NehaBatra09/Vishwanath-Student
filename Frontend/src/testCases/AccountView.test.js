@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import AccountView from '../components/AccountView';
-import { useAuth } from '../Context';
+import AuthProvider, { AuthContext, useAuth } from '../Context';
 
 jest.mock('../Context', () => ({
     useAuth: jest.fn(),
@@ -56,3 +56,4 @@ describe('AccountView Component', () => {
 
     // Add more test cases for different scenarios or functionalities within the AccountView component
 });
+

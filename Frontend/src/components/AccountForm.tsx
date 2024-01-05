@@ -31,7 +31,12 @@ const AccountForm: React.FC = () => {
                     label="Name"
                     variant="outlined"
                     margin="normal"
-                    onChange={(e) => setNewAccountDetails({ ...accountDetails, name: e.target.value })}
+                    onChange={(e) => {
+                        const input = e.target.value;
+                        const alphanumericInput = input.replace(/[^a-zA-Z0-9]/g, '');
+                        setNewAccountDetails({ ...accountDetails, name: alphanumericInput }
+                        )
+                    }}
                 />
                 <TextField
                     fullWidth
@@ -48,6 +53,12 @@ const AccountForm: React.FC = () => {
                     label="Age"
                     variant="outlined"
                     margin="normal"
+                    onChange={(e) => {
+                        const input = e.target.value;
+                        const numericInput = input.replace(/\D/g, ''); // Filter non-numeric characters
+                        setNewAccountDetails({ ...accountDetails, age: parseInt(numericInput) }
+                        )
+                    }}
                 />
                 <FormControl fullWidth margin="normal">
                     <InputLabel id="accountType">Account Type</InputLabel>

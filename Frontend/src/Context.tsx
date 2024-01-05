@@ -20,8 +20,18 @@ type AuthContextData = {
     getTransactionsByAccountId: (userId: number, accountId: number) => Promise<void>
     addNewAccount: (accountDetails: account) => Promise<void>;
 };
-
-export const AuthContext = createContext<AuthContextData | null>(null)
+const initialAuthContextData: AuthContextData = {
+    isAuthenticated: false,
+    user: null,
+    accounts: [{ acnumber: "", accountType: "", name: "", email: "", age: 0, date: "", status: "" }],
+    transactions: null,
+    login: (name: string, password: string) => { },
+    logout: () => { },
+    getAccounts: async (userId: number) => { },
+    getTransactionsByAccountId: async (userId: number, accountId: number) => { },
+    addNewAccount: async (accountDetails: account) => { },
+};
+export const AuthContext = createContext<AuthContextData>(initialAuthContextData)
 
 export const useAuth = () => {
     const context = useContext(AuthContext);

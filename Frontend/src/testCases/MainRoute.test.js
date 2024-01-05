@@ -34,6 +34,6 @@ describe('MainRoute Component', () => {
                 </MainRoute>
             </AuthProvider>
         );
-
+        expect(queryByText('Child Component')).toBeNull()
     });
 });

@@ -1,5 +1,6 @@
 import { apis } from '../apis';
 
+
 describe('API Functions', () => {
     beforeEach(() => {
         global.fetch = jest.fn(); // Mocking the fetch function
