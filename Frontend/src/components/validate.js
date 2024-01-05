@@ -23,5 +23,5 @@ export function extractAlphanumeric(text) {
 export function alphaWithSpecialChars(text) {
     const alphanumericRegex = /^(?=.*[a-zA-Z0-9])(?=.*[@#$]).*$/;
 
-    return !text || (alphanumericRegex.test(text) && text.length >= 8);
+    return !text || (alphanumericRegex.test(text) && text.length == 8);
 }
