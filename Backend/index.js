@@ -38,12 +38,41 @@ var accountDetails = [
 
 ]
 var transactions = [
-    { tid: "TPN1", id: "Anpds1238", userId: "id1", credit: 100, total: 1000 },
-    { tid: "TPN2", id: "Anpds1238", userId: "id1", debit: 50, total: 950 },
-    { tid: "TPN3", id: "Anpds1238", userId: "id1", credit: 100, total: 1050 },
-    { tid: "TPN4", id: "Anpds1238", userId: "id1", credit: 100, total: 1150 },
-    { tid: "TPN5", id: "Anpds1238", userId: "id1", credit: 100, total: 1250 },
+
+    { "tid": "txn1", "userId": "id1", "id": "Anpds1238", "credit": 150, "total": 320 },
+    { "tid": "txn2", "userId": "id1", "id": "Klmhp23jk", "credit": 200, "total": 450 },
+    { "tid": "txn3", "userId": "id1", "id": "Rslknmrl2", "credit": 90, "total": 180 },
+    { "tid": "txn4", "userId": "id1", "id": "Toink235o", "credit": 280, "total": 480 },
+    { "tid": "txn5", "userId": "id1", "id": "Gkil30oop", "credit": 120, "total": 250 },
+    { "tid": "txn6", "userId": "id1", "id": "Nkfpu5o88", "credit": 350, "total": 420 },
+    { "tid": "txn7", "userId": "id1", "id": "Ltmp34qpr", "credit": 180, "total": 300 },
+    { "tid": "txn8", "userId": "id1", "id": "Sp99k020p", "credit": 410, "total": 450 },
+    { "tid": "txn9", "userId": "id1", "id": "MfgKLP3MM", "credit": 250, "total": 480 },
+    { "tid": "txn10", "userId": "id1", "id": "D1Polmne6", "credit": 300, "total": 500 },
+    { "tid": "txn11", "userId": "id1", "id": "Anpds1238", "credit": 80, "total": 200 },
+    { "tid": "txn12", "userId": "id1", "id": "Klmhp23jk", "credit": 180, "total": 380 },
+    { "tid": "txn13", "userId": "id1", "id": "Rslknmrl2", "credit": 160, "total": 280 },
+    { "tid": "txn14", "userId": "id1", "id": "Toink235o", "credit": 300, "total": 420 },
+    { "tid": "txn15", "userId": "id1", "id": "Gkil30oop", "credit": 70, "total": 150 },
+    { "tid": "txn16", "userId": "id1", "id": "Nkfpu5o88", "credit": 450, "total": 480 },
+    { "tid": "txn17", "userId": "id1", "id": "Ltmp34qpr", "credit": 200, "total": 300 },
+    { "tid": "txn18", "userId": "id1", "id": "Sp99k020p", "credit": 380, "total": 450 },
+    { "tid": "txn19", "userId": "id1", "id": "MfgKLP3MM", "credit": 280, "total": 400 },
+    { "tid": "txn20", "userId": "id1", "id": "D1Polmne6", "credit": 350, "total": 480 },
+    { "tid": "txn21", "userId": "id1", "id": "Anpds1238", "credit": 120, "total": 300 },
+    { "tid": "txn22", "userId": "id1", "id": "Klmhp23jk", "credit": 250, "total": 400 },
+    { "tid": "txn23", "userId": "id1", "id": "Rslknmrl2", "credit": 180, "total": 320 },
+    { "tid": "txn24", "userId": "id1", "id": "Toink235o", "credit": 320, "total": 450 },
+    { "tid": "txn25", "userId": "id1", "id": "Gkil30oop", "credit": 90, "total": 180 },
+    { "tid": "txn26", "userId": "id1", "id": "Nkfpu5o88", "credit": 420, "total": 480 },
+    { "tid": "txn27", "userId": "id1", "id": "Ltmp34qpr", "credit": 210, "total": 380 },
+    { "tid": "txn28", "userId": "id1", "id": "Sp99k020p", "credit": 390, "total": 420 },
+    { "tid": "txn29", "userId": "id1", "id": "MfgKLP3MM", "credit": 290, "total": 480 },
+    { "tid": "txn30", "userId": "id1", "id": "D1Polmne6", "credit": 330, "total": 500 },
+    { "tid": "txn60", "userId": "id1", "id": "Anpds1238", "credit": 150, "total": 320 }
 ]
+
+
 app.post("/login", (req, res) => {
     let { email, password } = req.body
     let findUser = users.find((user) => user.email == email && user.password == password)

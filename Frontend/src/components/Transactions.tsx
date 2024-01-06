@@ -22,15 +22,15 @@ const Transactions: React.FC = () => {
         <table style={{ marginLeft: "400px" }}>
             <thead>
                 <tr>
-                    <th>Account Number</th>
+                    <th>Transaction Id</th>
                     <th>Total Amount</th>
                     <th>Payment Mode</th>
                 </tr>
             </thead>
             <tbody>
                 {context && context?.transactions.map((transaction: any) =>
-                    <tr key={transaction.acnumber}>
-                        <td>{transaction.acnumber}</td>
+                    <tr key={transaction.tid}>
+                        <td>{transaction.tid}</td>
                         <td>{transaction.total}</td>
                         <td>{transaction?.credit} {transaction?.debit}</td>
                     </tr>
