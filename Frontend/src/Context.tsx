@@ -91,8 +91,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 }
             }
         }
-        console.log(myaccounts.data)
-        setAccounts(myaccounts.data)
+        let newArr: [account] = [...myaccounts.data] as [account]
+        setAccounts(newArr)
 
 
     }
