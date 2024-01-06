@@ -430,10 +430,11 @@ app.post("/account/:userId", (req, res) => {
     let { name, age, email, address, branch, id, date } = req.body
     let findUser = users.find((user) => user.id == userId)
     console.log(findUser)
+    let newObj = { ...req.body, status: "pending" }
     // if (findUser) {
     //     accountDetails.push({ id, userId, name, age, email, address, branch, date, status: "pending" })
     // }
-    res.send(201, { status: true, message: "success", data: req.body })
+    res.send(201, { status: true, message: "success", data: newObj })
 })
 app.get("/transactions/:userId/:accountId", (req, res) => {
     let { userId, accountId } = req.params
