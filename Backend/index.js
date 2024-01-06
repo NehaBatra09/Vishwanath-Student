@@ -436,8 +436,10 @@ app.post("/account/:userId", (req, res) => {
     // }
     res.send(201, { status: true, message: "success", data: newObj })
 })
-app.get("/transactions/:userId/:accountId", (req, res) => {
-    let { userId, accountId } = req.params
+app.post("/transactions/:userId", (req, res) => {
+    let { userId } = req.params
+    let { accountId } = req.body
+    console.log(userId, accountId)
     let transactionResults = transactions.filter((transaction) => transaction.userId == userId && transaction.id == accountId)
     if (transactionResults.length > 0) {
         return res.send(200, { data: transactionResults, status: true, message: "transactions found" })

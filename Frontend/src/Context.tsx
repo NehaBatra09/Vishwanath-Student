@@ -129,7 +129,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     }
     const getTransactionsByAccountId = async (userId: string, accountId: string) => {
-        let { data } = await apis.get(`transactions/${userId}/${accountId}`)
+        let { data } = await apis.post(`transactions/${userId}`, { accountId })
         setTransactions(data)
     }
 

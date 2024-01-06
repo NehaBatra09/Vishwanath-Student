@@ -11,7 +11,7 @@ const AccountView: React.FC = () => {
         if (userId && context) {
             context.getAccounts(userId)
         }
-    }, [context])
+    }, [])
 
     return (<>
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginBottom: "20px" }}>
@@ -63,7 +63,7 @@ const AccountView: React.FC = () => {
                     <CardActions>
                         <Button disabled={!account?.isTransactions} size="small" onClick={() =>
                             navigate(`/transactions`, {
-                                state: { acnumber: account?.id }
+                                state: { acnumber: account.id + "" }
                             })}>Go To Details</Button>
                     </CardActions>
                 </Card>
