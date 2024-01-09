@@ -85,8 +85,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const getAccounts = async (userId: string) => {
         let myaccounts = await apis.get("account/" + userId)
         let accountData: string | null = localStorage.getItem("accountData")
+
         if (accountData !== null) {
-            let newData: any = JSON.parse(accountData)
+            console.log(accountData)
+            let newData: [account] = JSON.parse(accountData)
             for (let i = 0; i <= newData.length; i++) {
                 if (newData[i] !== undefined) {
                     myaccounts.data.push(newData[i])
@@ -108,7 +110,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             } else {
                 let userId: string | null = localStorage.getItem("userId")
                 let { data } = await apis.post("account/" + userId, accountDetails)
-                if (localStorage.getItem("accountData") === undefined) {
+                if (localStorage.getItem("accountData") === null) {
                     localStorage.setItem("accountData", JSON.stringify([data]))
                 } else {
                     let account = localStorage.getItem("accountData")
