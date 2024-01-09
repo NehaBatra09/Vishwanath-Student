@@ -11,7 +11,7 @@ const AccountView: React.FC = () => {
         if (userId && context) {
             context.getAccounts(userId)
         }
-    }, [])
+    })
 
     return (<>
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginBottom: "20px" }}>

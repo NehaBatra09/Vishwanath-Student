@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react"
+import React, { createContext, useContext, useState } from "react"
 import { apis } from "./apis";
 import { useNavigate } from "react-router-dom";
 import { alphaWithSpecialChars, extractAlphanumeric, isNumber, isValidEmail } from "./components/validate";
@@ -67,8 +67,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (result?.status) {
             setUser(result.data)
             navigate("/accountView")
+
+        } else {
+            alert("User Not found.")
         }
         setIsAuthenticated(result?.status);
+
 
     };
 
@@ -83,7 +87,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (accountData !== null) {
             let newData: any = JSON.parse(accountData)
             for (let i = 0; i <= newData.length; i++) {
-                if (newData[i] != undefined) {
+                if (newData[i] !== undefined) {
                     myaccounts.data.push(newData[i])
                 }
             }
@@ -95,15 +99,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
     const addNewAccount = async (accountDetails: account) => {
         const { id, address, branch, date, name, age, email } = accountDetails
-        if (id == "" || address == "" || branch == "" || date == "" || name == "" && age == "" || email == "") {
+        if ((id === "") || (address === "") || (branch === "") || (date === "") || (name === "") || (age === "") || (email === "")) {
             alert("All Fields are required.")
         } else {
             if (!alphaWithSpecialChars(id) || !extractAlphanumeric(name) || !isNumber(age) || !isValidEmail(email)) {
                 alert("Data fields are incorrect. Please check..")
             } else {
                 let userId: string | null = localStorage.getItem("userId")
-                let { data, status } = await apis.post("account/" + userId, accountDetails)
-                if (localStorage.getItem("accountData") == undefined) {
+                let { data } = await apis.post("account/" + userId, accountDetails)
+                if (localStorage.getItem("accountData") === undefined) {
                     localStorage.setItem("accountData", JSON.stringify([data]))
                 } else {
 

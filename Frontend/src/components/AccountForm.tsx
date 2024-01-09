@@ -2,7 +2,6 @@ import { Container, TextField, Button, Typography, Box, Select, MenuItem, InputL
 import { useAuth } from '../Context';
 import React, { useState } from 'react';
 import { extractAlphanumeric, alphaWithSpecialChars, isNumber, isValidEmail } from './validate';
-import { useNavigate } from 'react-router-dom';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 const AccountForm: React.FC = () => {
@@ -44,8 +43,8 @@ const AccountForm: React.FC = () => {
                         )
                     }}
                     required
-                    error={!alphaWithSpecialChars(accountDetails.id) && accountDetails.id != ""}
-                    helperText={(!alphaWithSpecialChars(accountDetails.id) && accountDetails.id != "") ? "Id length shoule be greater than 8" : ""}
+                    error={!alphaWithSpecialChars(accountDetails.id) && accountDetails.id !== ""}
+                    helperText={(!alphaWithSpecialChars(accountDetails.id) && accountDetails.id !== "") ? "Id length shoule be greater than 8" : ""}
                 />
                 <TextField
 
@@ -58,8 +57,8 @@ const AccountForm: React.FC = () => {
                     )
                     }
                     required
-                    error={!extractAlphanumeric(accountDetails.name) && accountDetails.name != ""}
-                    helperText={(!extractAlphanumeric(accountDetails.name) && accountDetails.name != "") ? "Name Should be alphanumeric" : ""}
+                    error={!extractAlphanumeric(accountDetails.name) && accountDetails.name !== ""}
+                    helperText={(!extractAlphanumeric(accountDetails.name) && accountDetails.name !== "") ? "Name Should be alphanumeric" : ""}
                 />
                 <TextField
                     required
@@ -69,8 +68,8 @@ const AccountForm: React.FC = () => {
                     type="text"
                     variant="outlined"
                     margin="normal"
-                    error={!isValidEmail(accountDetails.email) && accountDetails.email != ""}
-                    helperText={(!isValidEmail(accountDetails.email) && accountDetails.email != "") && "Email Should valid."}
+                    error={!isValidEmail(accountDetails.email) && accountDetails.email !== ""}
+                    helperText={(!isValidEmail(accountDetails.email) && accountDetails.email !== "") && "Email Should valid."}
                     onChange={(e: any) => setNewAccountDetails({ ...accountDetails, email: e.target.value })}
                 />
                 <TextField
@@ -80,8 +79,8 @@ const AccountForm: React.FC = () => {
                     label="Age"
                     variant="outlined"
                     margin="normal"
-                    error={!isNumber(accountDetails.age) && accountDetails.age != ""}
-                    helperText={(!isNumber(accountDetails.age) && accountDetails.age != "") && "Age should be in numbers"}
+                    error={!isNumber(accountDetails.age) && accountDetails.age !== ""}
+                    helperText={(!isNumber(accountDetails.age) && accountDetails.age !== "") && "Age should be in numbers"}
                     onChange={(e: any) => {
 
                         setNewAccountDetails({ ...accountDetails, age: e.target.value }
