@@ -68,6 +68,7 @@ const AccountView: React.FC = () => {
                             })}>Go To Details</Button>
                     </CardActions>
                 </Card>
+
             )}
         </div >
 

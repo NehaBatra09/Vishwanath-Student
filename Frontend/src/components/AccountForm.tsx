@@ -37,7 +37,7 @@ const AccountForm: React.FC = () => {
                     id="id"
                     variant="outlined"
                     margin="normal"
-                    onChange={(e: any) => {
+                    onChange={(e) => {
 
                         setNewAccountDetails({ ...accountDetails, id: e.target.value }
                         )
@@ -53,7 +53,7 @@ const AccountForm: React.FC = () => {
                     id="name"
                     variant="outlined"
                     margin="normal"
-                    onChange={(e: any) => setNewAccountDetails({ ...accountDetails, name: e.target.value }
+                    onChange={(e) => setNewAccountDetails({ ...accountDetails, name: e.target.value }
                     )
                     }
                     required
@@ -81,7 +81,7 @@ const AccountForm: React.FC = () => {
                     margin="normal"
                     error={!isNumber(accountDetails.age) && accountDetails.age !== ""}
                     helperText={(!isNumber(accountDetails.age) && accountDetails.age !== "") && "Age should be in numbers"}
-                    onChange={(e: any) => {
+                    onChange={(e) => {
 
                         setNewAccountDetails({ ...accountDetails, age: e.target.value }
                         )
@@ -94,7 +94,7 @@ const AccountForm: React.FC = () => {
                     id="address"
                     variant="outlined"
                     margin="normal"
-                    onChange={(e: any) => {
+                    onChange={(e) => {
 
                         setNewAccountDetails({ ...accountDetails, address: e.target.value }
                         )
@@ -123,7 +123,7 @@ const AccountForm: React.FC = () => {
                         id="accountType"
                         label="Account Type"
                         value={accountDetails.accountType}
-                        onChange={(e: any) => setNewAccountDetails({ ...accountDetails, accountType: e.target.value })}
+                        onChange={(e) => setNewAccountDetails({ ...accountDetails, accountType: e.target.value })}
                     >
                         {accountTypes?.map((accountType: string, index: number) =>
                             <MenuItem key={index} value={accountType}>{accountType}</MenuItem>

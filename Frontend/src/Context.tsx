@@ -56,6 +56,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [transactions, setTransactions] = useState([])
     const navigate = useNavigate()
 
+
     const login = async (email: string, password: string) => {
 
         let result = await apis.post("login", { email, password })
@@ -110,9 +111,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 if (localStorage.getItem("accountData") === undefined) {
                     localStorage.setItem("accountData", JSON.stringify([data]))
                 } else {
-
                     let account = localStorage.getItem("accountData")
-
                     if (account) {
                         let newDT = JSON.parse(account)
                         newDT.push(data)
@@ -120,8 +119,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                         localStorage.removeItem("accountData")
                         localStorage.setItem("accountData", JSON.stringify(newDT))
                     }
-
-
                 }
                 navigate("/accountView")
             }

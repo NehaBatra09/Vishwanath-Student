@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { MemoryRouter, BrowserRouter as Router } from 'react-router-dom';
 import AccountView from '../components/AccountView';
 import AuthProvider, { AuthContext, useAuth } from '../Context';
 
@@ -57,7 +57,37 @@ describe('AccountView Component', () => {
         await waitFor(() => {
         });
     });
+    it('renders "Create Account" button and header', () => {
+        const mockContext = {
+            accounts: [],
+            getAccounts: jest.fn(),
+        };
 
-    // Add more test cases for different scenarios or functionalities within the AccountView component
+        const { getByText } = render(
+            <MemoryRouter>
+                <AccountView />
+            </MemoryRouter>
+        );
+
+        const createAccountButton = getByText(/Create Account/i);
+        expect(createAccountButton).toBeInTheDocument();
+
+    });
+    it('navigates to accountForm on "Create Account" button click', () => {
+        const mockNavigate = jest.fn();
+        jest.mock('react-router-dom', () => ({
+            ...jest.requireActual('react-router-dom'),
+            useNavigate: () => mockNavigate,
+        }))
+        const { getByText } = render(
+            <MemoryRouter>
+                <AccountView />
+            </MemoryRouter>
+        );
+        const createAccountButton = getByText('Create Account');
+        fireEvent.click(createAccountButton);
+        expect(getByText("AC/Stauts: Active")).toBeInTheDocument()
+    });
+
 });
 

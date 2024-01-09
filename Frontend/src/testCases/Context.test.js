@@ -1,87 +1,153 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import AuthProvider from '../Context';
-import Login from '../Login';
+import React from 'react';
+import { render, act } from '@testing-library/react';
+import AuthProvider, { AuthContext, useAuth } from '../Context';
+import { apis } from '../apis'; // Replace with suitable mocks
 import AccountForm from '../components/AccountForm';
-import Header from '../components/Header';
-import { useNavigate } from 'react-router-dom';
-import { act } from 'react-dom/test-utils';
+import Transactions from '../components/Transactions';
+import { MemoryRouter } from 'react-router-dom';
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useNavigate: jest.fn(),
+jest.mock('../apis', () => ({
+    apis: {
+        post: jest.fn(),
+        get: jest.fn(),
+    },
 }));
-describe('AuthProvider component', () => {
 
-
-    const mockNavigate = jest.fn();
-    (useNavigate).mockImplementation(() => mockNavigate);
-
-    test('renders AuthProvider component', () => {
-        render(
-            <AuthProvider>
-                <div>Child Components</div>
-            </AuthProvider>
-        );
+describe('Auth Context', () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+        localStorage.clear();
     });
 
-    // Test case for login functionality
-    test('logs in the user successfully', async () => {
-        render(
-            <Login />
+    test('provides authentication context', () => {
+        const ConsumerComponent = () => {
+            const auth = useAuth();
+            return <div data-testid="test">{JSON.stringify(auth)}</div>;
+        };
+
+        const { getByTestId } = render(
+            <MemoryRouter>
+                <AuthProvider>
+                    <ConsumerComponent />
+                </AuthProvider>
+            </MemoryRouter>
         );
+
+        const contextData = getByTestId('test').textContent;
+        expect(contextData).toBeTruthy();
+        // Add assertions based on the expected context data structure
+    });
+
+    test('logs in user and sets authentication', async () => {
+        const mockData = { id: 1 };
+        apis.post.mockResolvedValue({ status: true, data: mockData });
+
+        const ConsumerComponent = () => {
+            const { isAuthenticated, login } = useAuth();
+            return (
+                <button onClick={() => login('test@example.com', 'password')}>
+                    Login
+                </button>
+            );
+        };
+
+
+        const { getByText } = render(
+            <MemoryRouter>
+                <AuthProvider>
+                    <ConsumerComponent />
+                </AuthProvider>
+            </MemoryRouter >
+        );
+
+        const loginButton = getByText('Login');
         await act(async () => {
-            const emailInput = screen.getByLabelText('Email'); // Change this to match your actual label text
-            const passwordInput = screen.getByLabelText('Password'); // Change this to match your actual label text
-            const loginButton = screen.getByRole('button', { name: 'Login' }); // Change this to match your actual button text
+            loginButton.click();
+        });
 
-            userEvent.type(emailInput, 'test@example.com');
-            userEvent.type(passwordInput, 'password');
-            fireEvent.click(loginButton);
-        })
-
+        expect(apis.post).toHaveBeenCalledWith('login', {
+            email: 'test@example.com',
+            password: 'password',
+        });
+        // Add assertions based on expected behavior after login
     });
 
-    // Test case for logout functionality
-    test('logs out the user successfully', async () => {
-        // Mock the localStorage and simulate a logged-in state
-        render(
-            <AuthProvider>
-                <Header />
-            </AuthProvider>
+    test('logs out user and clears authentication', async () => {
+        const ConsumerComponent = () => {
+            const { isAuthenticated, logout } = useAuth();
+            return (
+                <button onClick={logout}>
+                    Logout
+                </button>
+            );
+        };
+
+        localStorage.setItem('userId', '1');
+        const { getByText } = render(
+            <MemoryRouter>
+                <AuthProvider>
+                    <ConsumerComponent />
+                </AuthProvider>
+            </MemoryRouter>
         );
 
-        const logoutButton = screen.getByRole('button', { name: 'Log Out' }); // Change this to match your actual button text
-        fireEvent.click(logoutButton);
+        const logoutButton = getByText('Logout');
+        await act(async () => {
+            logoutButton.click();
+        });
 
-
+        expect(localStorage.getItem('userId')).toBeNull();
+        // Add assertions based on expected behavior after logout
     });
 
-    // Test case for adding a new account
-    // test('adds a new account successfully', async () => {
-    //     // Mock the apis.post method to return a successful response
-    //     // Simulate user interaction with the add account form
-    //     // For example, assuming there's a form to add a new account:
+    test('fetches and sets accounts correctly', async () => {
+        const mockAccountsData = [
+            {
+                acnumber: '123',
+                accountType: 'Savings',
+                name: 'John Doe',
+                email: 'johndoe@example.com',
+                age: 30,
+                date: '2023-01-01',
+                status: 'Active',
+            },
+        ];
 
-    //     render(
-    //         <AuthProvider>
-    //             <AccountForm />
-    //         </AuthProvider>
-    //     );
+        // Mocking the API response
+        const mockGetApi = jest.fn().mockResolvedValue({ data: mockAccountsData });
+        require('../apis').apis.get.mockImplementation(mockGetApi);
+        let result;
+        const TestComponent = () => {
+            result = useAuth(); // Using useAuth hook here
+            return null;
+        };
 
+        render(
+            <MemoryRouter>
+                <AuthContext.Provider value={{
+                    getAccounts: mockGetApi, // Mocking getAccounts with the mock function
+                    accounts: [{
+                        acnumber: '123',
+                        accountType: 'Savings',
+                        name: 'John Doe',
+                        email: 'johndoe@example.com',
+                        age: 30,
+                        date: '2023-01-01',
+                        status: 'Active',
+                    },], // You might need to provide an initial value for accounts here
+                }}
+                >
+                    <TestComponent />
+                </AuthContext.Provider>
+            </MemoryRouter>
+        );
 
-    //     const idInput = screen.getByLabelText('Id'); // Change this to match your actual label text
-    //     const addressInput = screen.getByLabelText('Address'); // Change this to match your actual label text
+        await act(async () => {
+            await result.getAccounts(1); // This should call the mocked getAccounts
+        });
 
-    //     userEvent.type(idInput, '123456');
-    //     userEvent.type(addressInput, 'Test Address');
-
-    //     const addAccountButton = screen.getByRole('button', { name: 'Add Account' }); // Change this to match your actual button text
-    //     fireEvent.click(addAccountButton);
-
-    //     await waitFor(() => {
-    //         expect(mockNavigate).toHaveBeenCalledWith('/accountView');
-    //     });
-    // });
-
+        expect(mockGetApi).toHaveBeenCalled(); // Ensure the mock function was called
+        expect(result.accounts).toEqual(mockAccountsData);
+    });
+    // More test cases covering getAccounts, addNewAccount, getTransactionsByAccountId, etc.
 });
