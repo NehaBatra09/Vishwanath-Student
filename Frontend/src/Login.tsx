@@ -9,16 +9,11 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-
         if (context) {
             context.login(email, password)
         }
     };
-    useEffect(() => {
-        if (context && context?.isAuthenticated) {
-            window.location.href = "/accountView"
-        }
-    }, [context])
+
     return (
 
         <Container maxWidth="sm">
@@ -29,12 +24,12 @@ const Login: React.FC = () => {
 
                 <TextField
                     fullWidth
-                    id="name"
-                    label="Name"
+                    id="email"
+                    label="Email"
                     type="text"
                     variant="outlined"
                     margin="normal"
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => { setEmail(e.target.value) }}
                     placeholder='Enter UserName'
                 />
                 <TextField
@@ -45,7 +40,7 @@ const Login: React.FC = () => {
                     variant="outlined"
                     margin="normal"
                     placeholder='Enter Password'
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => { setPassword(e.target.value) }}
                 />
 
                 <Button

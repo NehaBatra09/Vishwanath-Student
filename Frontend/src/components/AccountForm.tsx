@@ -1,14 +1,11 @@
 import { Container, TextField, Button, Typography, Box, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { DatePicker } from '@mui/x-date-pickers';
 import { useAuth } from '../Context';
 import React, { useState } from 'react';
 import { extractAlphanumeric, alphaWithSpecialChars, isNumber, isValidEmail } from './validate';
 import { useNavigate } from 'react-router-dom';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 const AccountForm: React.FC = () => {
-    const navigate = useNavigate()
     const [accountDetails, setNewAccountDetails] = useState({ id: "", name: "", email: "", age: "", accountType: "ac1", date: "", address: "", branch: "", status: "" })
     const context = useAuth()
     const [accountTypes] = useState(["ac1",
@@ -36,7 +33,6 @@ const AccountForm: React.FC = () => {
                     Account Form
                 </Typography>
                 <TextField
-
                     label="Id"
                     fullWidth
                     id="id"
@@ -136,10 +132,9 @@ const AccountForm: React.FC = () => {
                     </Select>
                 </FormControl>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={['DatePicker']}>
-                        <DatePicker label="Basic date picker" onChange={(e: any) => setNewAccountDetails({ ...accountDetails, date: e })} />
-                    </DemoContainer>
+                    <DatePicker label="Basic date picker" onChange={(e: any) => setNewAccountDetails({ ...accountDetails, date: e })} />
                 </LocalizationProvider>
+
                 <Button
                     type="submit"
                     variant="contained"
@@ -151,7 +146,7 @@ const AccountForm: React.FC = () => {
                     Done
                 </Button>
             </Box>
-        </Container>
+        </Container >
     </>)
 }
 

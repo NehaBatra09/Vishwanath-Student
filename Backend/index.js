@@ -460,18 +460,5 @@ app.get("/accountTypes", (req, res) => {
     res.send(200, { data: accountTypes, status: true, message: "success" })
 })
 
-// function generId() {
-//     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
-//     const idLength = 8; // Minimum length of the ID
 
-//     let id = '';
-
-//     while (id.length < idLength) {
-//         const randomIndex = Math.floor(Math.random() * characters.length);
-//         id += characters.charAt(randomIndex);
-//     }
-
-//     return id;
-// }
-
-app.listen(4000)
+app.listen(5000)

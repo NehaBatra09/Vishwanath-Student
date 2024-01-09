@@ -1,14 +1,14 @@
-const baseUrl = "http://localhost:4000/"
+const baseUrl = "http://localhost:5000/"
 
 export const apis = {
     get: async function (url) {
         let res = await fetch(baseUrl + url)
-        let response = await res.json()
-        if (response.status) {
+        let response = await res?.json()
+        if (response && response.status) {
             return { status: true, data: response.data, message: "Success" }
         }
         else {
-            return { status: false, code: false, message: "Something went wrong." }
+            return { status: false, data: undefined, message: "Error Message" }
         }
 
     },
@@ -21,12 +21,12 @@ export const apis = {
             body: JSON.stringify(payload)
         }
         let res = await fetch(baseUrl + url, config)
-        let response = await res.json()
-        if (response.status) {
+        let response = await res?.json()
+        if (response && response.status) {
             return { status: true, data: response.data, message: response.message }
         }
         else {
-            return { status: false, code: false, message: response.message }
+            return { status: false, data: undefined, message: "Error Message" }
         }
 
     }

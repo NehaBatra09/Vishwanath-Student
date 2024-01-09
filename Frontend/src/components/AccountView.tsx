@@ -24,6 +24,7 @@ const AccountView: React.FC = () => {
         </div>
 
 
+
         <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: "30px", justifyContent: "center", alignItems: "center" }}>
             {context && context?.accounts?.map((account: any, index: number) =>
                 <Card key={index} sx={{ minWidth: 275, background: "lightblue" }}>
@@ -51,7 +52,7 @@ const AccountView: React.FC = () => {
                             Date:  {new Date(account?.date).toDateString()}
                         </Typography>
                         <Typography variant="body2">
-                            Addrss: {account?.address}
+                            Address: {account?.address}
                         </Typography>
                         <Typography variant="body2">
                             Branch: {account?.branch}

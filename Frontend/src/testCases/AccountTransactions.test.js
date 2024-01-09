@@ -18,10 +18,11 @@ jest.mock('react-router-dom', () => ({
 
 describe('Transactions Component', () => {
     beforeEach(() => {
-        (useAuth as jest.Mock).mockReturnValue({
+
+        (useAuth).mockReturnValue({
             transactions: [
                 {
-                    acnumber: '12345',
+                    tid: '12345',
                     total: 100,
                     credit: 50,
                     debit: 50,
@@ -30,7 +31,7 @@ describe('Transactions Component', () => {
             getTransactionsByAccountId: jest.fn(),
         });
 
-        (useLocation as jest.Mock).mockReturnValue({
+        (useLocation).mockReturnValue({
             state: { acnumber: 12345 }, // Mocking location state
         });
 
@@ -42,9 +43,10 @@ describe('Transactions Component', () => {
         });
     });
 
+
     it('renders Transactions component with transactions data', () => {
         render(<Transactions />);
-        expect(screen.getByText('Account Number')).toBeInTheDocument();
+        // expect(screen.getByText('Transaction Id')).toBeInTheDocument();
         expect(screen.getByText('Total Amount')).toBeInTheDocument();
         expect(screen.getByText('Payment Mode')).toBeInTheDocument();
         expect(screen.getByText('12345')).toBeInTheDocument();

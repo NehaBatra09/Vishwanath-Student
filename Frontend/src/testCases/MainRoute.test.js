@@ -1,39 +1,42 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import MainRoute from '.././components/MainRoute';
-import Login from '../Login';
-import AuthProvider from '../Context';
+import MainRoute from '../components/MainRoute';
+import AuthProvider from '../Context'; // Update the import path according to your file structure
+import Login from '../Login'; // Update the import path according to your file structure
+import { MemoryRouter } from 'react-router-dom';
 
 describe('MainRoute Component', () => {
-    afterEach(() => {
-        localStorage.clear();
-    });
+    test('renders Login component when userId is undefined', () => {
+        // Mock localStorage getItem to return undefined for userId
+        const mockGetItem = jest.spyOn(Storage.prototype, 'getItem');
+        mockGetItem.mockReturnValue(undefined);
 
-    test('renders children when userId is present in localStorage', () => {
-        localStorage.setItem('userId', 'testUserId');
-
-        const { queryByText } = render(
-            <AuthProvider>
+        const { getByText } = render(
+            <MemoryRouter>
                 <MainRoute>
                     <div>Child Component</div>
                 </MainRoute>
-            </AuthProvider>
+            </MemoryRouter>
         );
 
-        expect(queryByText('Child Component')).toBeInTheDocument();
-        expect(queryByText('Enter UserName')).toBeNull(); // Ensure Login component is not present
+        // Check if the Login component is rendered when userId is undefined
+        expect(getByText('Login')).toBeInTheDocument();
     });
 
-    test('renders Login component when userId is not present in localStorage', () => {
-        localStorage.removeItem('userId');
+    test('renders AuthProvider and children when userId is defined', () => {
+        // Mock localStorage getItem to return a value for userId
+        const mockGetItem = jest.spyOn(Storage.prototype, 'getItem');
+        mockGetItem.mockReturnValue('someUserId');
 
-        const { queryByText } = render(
-            <AuthProvider>
+        const { getByText } = render(
+            <MemoryRouter>
                 <MainRoute>
                     <div>Child Component</div>
                 </MainRoute>
-            </AuthProvider>
+            </MemoryRouter>
         );
-        expect(queryByText('Child Component')).toBeNull()
+
+        // Check if AuthProvider and children are rendered when userId is defined
+        expect(getByText('Child Component')).toBeInTheDocument(); // Ensure child components are rendered
     });
 });

@@ -15,13 +15,15 @@ describe('AccountView Component', () => {
         mockedUseAuth.mockReturnValue({
             accounts: [
                 {
-                    acnumber: '123456',
+                    id: '123456',
                     accountType: 'Savings',
                     name: 'John Doe',
                     email: 'john@example.com',
                     age: 30,
                     date: '2023-01-01',
                     status: 'Active',
+                    address: "ABCD",
+                    branch: "ABCD"
                 },
                 // Add more sample accounts as needed for your tests
             ],
@@ -45,6 +47,8 @@ describe('AccountView Component', () => {
         expect(screen.getByText('Name: John Doe')).toBeInTheDocument();
         expect(screen.getByText('Email: john@example.com')).toBeInTheDocument();
         expect(screen.getByText('Age: 30')).toBeInTheDocument();
+        expect(screen.getByText('Address: ABCD')).toBeInTheDocument();
+        expect(screen.getByText('Branch: ABCD')).toBeInTheDocument();
 
         // Test 3: Simulate a click on "Go To Details" button
         const goToDetailsButton = screen.getByRole('button', { name: 'Go To Details' });

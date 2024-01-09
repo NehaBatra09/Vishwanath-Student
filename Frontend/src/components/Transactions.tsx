@@ -9,7 +9,6 @@ const Transactions: React.FC = () => {
 
     const userId: string | null = localStorage.getItem("userId")
     const acnumber: string = location?.state?.acnumber + ""
-    console.log(acnumber)
     useEffect(() => {
         if (userId && context) {
             context.getTransactionsByAccountId(userId, acnumber)

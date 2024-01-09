@@ -58,18 +58,17 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const login = async (email: string, password: string) => {
 
-        let { status, data } = await apis.post("login", { email, password })
-        if (!localStorage.getItem("userId")) {
-            localStorage.setItem("userId", data.id)
-            localStorage.setItem("email", data.email)
+        let result = await apis.post("login", { email, password })
+        if (result?.status && !localStorage.getItem("userId")) {
+            localStorage.setItem("userId", result.data.id)
+            localStorage.setItem("email", result.data.email)
         }
-        if (status) {
-            setUser(data)
-            alert("Login Success.")
-        } else {
-            alert("UserName and Password does not match.")
+
+        if (result?.status) {
+            setUser(result.data)
+            navigate("/accountView")
         }
-        setIsAuthenticated(status);
+        setIsAuthenticated(result?.status);
 
     };
 
@@ -77,14 +76,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.clear()
         setUser(null)
         setIsAuthenticated(false);
-        navigate("/")
     };
     const getAccounts = async (userId: string) => {
         let myaccounts = await apis.get("account/" + userId)
         let accountData: string | null = localStorage.getItem("accountData")
         if (accountData !== null) {
             let newData: any = JSON.parse(accountData)
-            console.log(newData)
             for (let i = 0; i <= newData.length; i++) {
                 if (newData[i] != undefined) {
                     myaccounts.data.push(newData[i])
@@ -116,7 +113,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                         let newDT = JSON.parse(account)
                         newDT.push(data)
 
-                        console.log(newDT)
                         localStorage.removeItem("accountData")
                         localStorage.setItem("accountData", JSON.stringify(newDT))
                     }
