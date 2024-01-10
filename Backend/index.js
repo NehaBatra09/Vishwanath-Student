@@ -431,9 +431,7 @@ app.post("/account/:userId", (req, res) => {
     let findUser = users.find((user) => user.id == userId)
     console.log(findUser)
     let newObj = { ...req.body, status: "pending" }
-    // if (findUser) {
-    //     accountDetails.push({ id, userId, name, age, email, address, branch, date, status: "pending" })
-    // }
+
     res.send(201, { status: true, message: "success", data: newObj })
 })
 app.post("/transactions/:userId", (req, res) => {

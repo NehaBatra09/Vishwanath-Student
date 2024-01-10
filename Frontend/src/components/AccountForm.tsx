@@ -1,10 +1,13 @@
-import { Container, TextField, Button, Typography, Box, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
-import { useAuth } from '../Context';
-import React, { useState } from 'react';
-import { extractAlphanumeric, alphaWithSpecialChars, isNumber, isValidEmail } from './validate';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Container, TextField, Button, Typography, Box, Select, MenuItem, InputLabel, FormControl } from '@mui/material'
+import { useAuth } from '../Context'
+import React, { useState } from 'react'
+import { extractAlphanumeric, alphaWithSpecialChars, isNumber, isValidEmail, isNullOrBlank } from './validate'
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { useNavigate } from 'react-router-dom'
+import Header from './Header'
 const AccountForm: React.FC = () => {
+    const navigate = useNavigate()
     const [accountDetails, setNewAccountDetails] = useState({ id: "", name: "", email: "", age: "", accountType: "ac1", date: "", address: "", branch: "", status: "" })
     const context = useAuth()
     const [accountTypes] = useState(["ac1",
@@ -20,12 +23,17 @@ const AccountForm: React.FC = () => {
 
 
         if (context) {
-            context.addNewAccount(accountDetails)
+            const { id, name, age, email, address, branch } = accountDetails
+            if (isNullOrBlank(address) || isNullOrBlank(branch) || !alphaWithSpecialChars(id) || !extractAlphanumeric(name) || !isNumber(age) || !isValidEmail(email)) {
+                alert("All Felds should be correct and required. Please check..")
+            } else {
+                context.addNewAccount(accountDetails)
+                navigate("/accountView")
+            }
         }
-
     }
-
     return (<>
+        <Header />
         <Container maxWidth="sm">
             <Box sx={{ marginTop: 8 }}>
                 <Typography variant="h4" align="center" gutterBottom>
@@ -44,7 +52,7 @@ const AccountForm: React.FC = () => {
                     }}
                     required
                     error={!alphaWithSpecialChars(accountDetails.id) && accountDetails.id !== ""}
-                    helperText={(!alphaWithSpecialChars(accountDetails.id) && accountDetails.id !== "") ? "Id length shoule be greater than 8" : ""}
+                    helperText={(!alphaWithSpecialChars(accountDetails.id) && accountDetails.id !== "") ? "Id length should be  8 digits" : ""}
                 />
                 <TextField
 
@@ -131,7 +139,7 @@ const AccountForm: React.FC = () => {
                     </Select>
                 </FormControl>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker label="Basic date picker" onChange={(e: any) => setNewAccountDetails({ ...accountDetails, date: e })} />
+                    <DatePicker sx={{ width: '100%' }} label="Date" onChange={(e: any) => setNewAccountDetails({ ...accountDetails, date: e })} />
                 </LocalizationProvider>
 
                 <Button

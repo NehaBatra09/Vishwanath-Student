@@ -1,20 +1,31 @@
-import React, { useState } from 'react';
-import { Container, TextField, Button, Typography, Box } from '@mui/material';
-import { useAuth } from './Context';
+import React, { useState } from 'react'
+import { Container, TextField, Button, Typography, Box } from '@mui/material'
+import { apis } from './apis'
+import { useNavigate } from 'react-router-dom'
 
 
 
 
 const Login: React.FC = () => {
-    const context = useAuth();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const navigate = useNavigate()
 
-    const handleLogin = () => {
-        if (context) {
-            context.login(email, password)
+    const handleLogin = async () => {
+        let result = await apis.post("login", { email, password })
+        if (result?.status && !localStorage.getItem("userId")) {
+            localStorage.setItem("userId", result.data.id)
+            localStorage.setItem("email", result.data.email)
         }
-    };
+        if (result.status) {
+            navigate("/accountView")
+
+        } else {
+            alert("User Not found.")
+        }
+    }
+
+
 
     return (
 
@@ -57,7 +68,7 @@ const Login: React.FC = () => {
                 </Button>
             </Box>
         </Container>
-    );
-};
+    )
+}
 
-export default Login;
+export default Login

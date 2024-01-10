@@ -1,27 +1,27 @@
 
 export function isNullOrBlank(text) {
-    return !text || /^\s*$/.test(text);
+    return !text && /^\s*$/.test(text)
 }
 
-export function isValidEmail(email) {
-    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export function isValidEmail(text) {
 
-    return emailRegex.test(email);
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+    return !isNullOrBlank(text) && emailRegex.test(text)
 }
-export function isNumber(value) {
-    return !isNaN(value);
+export function isNumber(text) {
+    return !isNullOrBlank(text) && !isNaN(text) && (/^\d*$/).test(text) && (/^\d+$/).test(text) && parseInt(text) !== 0 && !(/^0{2,}/).test(text)
 }
-export function isValidId(id) {
-    return (id.length >= 8 && extractAlphanumeric(id))
-}
+
 export function extractAlphanumeric(text) {
 
-    const alphaNumericRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$/;
+    const alphaNumericRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$/
+    return !isNullOrBlank(text) && alphaNumericRegex.test(text)
 
-    return alphaNumericRegex.test(text);
 }
 export function alphaWithSpecialChars(text) {
-    const alphanumericRegex = /^(?=.*[a-zA-Z0-9])(?=.*[@#$]).*$/;
 
-    return !text || (alphanumericRegex.test(text) && text.length == 8);
+    const alphanumericRegex = (/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-={};':"\\|,.<>?])[a-zA-Z0-9!@#$%^&*()_+\-={};':"\\|,.<>?]{8}$/)
+    return !isNullOrBlank(text) && alphanumericRegex.test(text)
+
 }

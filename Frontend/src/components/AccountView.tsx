@@ -1,30 +1,30 @@
 import React, { useEffect } from "react"
-import { useAuth } from "../Context";
-import { useNavigate } from "react-router-dom";
-import Header from "./Header";
+import { useAuth } from "../Context"
+import { useNavigate } from "react-router-dom"
+import Header from "./Header"
 import { Button, Card, CardActions, CardContent, Typography } from "@mui/material"
 const AccountView: React.FC = () => {
-    const context = useAuth();
+    const context = useAuth()
     const userId: string | null = localStorage.getItem("userId")
     const navigate = useNavigate()
+
     useEffect(() => {
+
         if (userId && context) {
+
             context.getAccounts(userId)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (<>
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginBottom: "20px" }}>
-
             <Button type="submit"
                 variant="contained"
                 color="primary"
                 sx={{ marginTop: 2, padding: "20px" }} onClick={() => navigate("/accountForm")}>Create Account</Button>
             <Header />
         </div>
-
-
-
         <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: "30px", justifyContent: "center", alignItems: "center" }}>
             {context && context?.accounts?.map((account: any, index: number) =>
                 <Card key={index} sx={{ minWidth: 275, background: "lightblue" }}>
@@ -71,7 +71,6 @@ const AccountView: React.FC = () => {
 
             )}
         </div >
-
     </>)
 }
 

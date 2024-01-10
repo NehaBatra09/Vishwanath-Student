@@ -51,3 +51,10 @@ td {
   padding-left: 30px;
   padding-right: 40px;
 }
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
