@@ -2,8 +2,13 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom"
 import { useAuth } from "../Context"
 import Header from "./Header"
-import { Card, CardContent, Typography } from "@mui/material"
+import { DataGrid, GridColDef } from '@mui/x-data-grid'
 
+const columns: GridColDef[] = [
+    { field: 'tid', headerName: 'Transation Id', width: 150 },
+    { field: 'total', headerName: 'Amount', width: 150 },
+    { field: 'credit', headerName: 'Payment Mode', width: 150 },
+];
 const Transactions: React.FC = () => {
     const context = useAuth();
     const location = useLocation()
@@ -21,24 +26,8 @@ const Transactions: React.FC = () => {
 
     return (<>
         <Header />
-        <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: "30px", justifyContent: "center", alignItems: "center" }}>
-            {context && context?.transactions?.map((transaction: any, index: number) =>
-                <Card key={index} sx={{ minWidth: 275, background: "lightblue" }}>
-                    <CardContent>
-                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            Transaction Id: {transaction?.tid}
-                        </Typography>
-                        <Typography variant="h5" component="div">
-                            Total Amount: {transaction?.total}
-                        </Typography>
-                        <Typography variant="body2">
-                            Payment Mode: {transaction?.credit} {transaction?.debit}
-
-                        </Typography>
-
-                    </CardContent>
-                </Card>
-            )}
+        <div style={{ marginLeft: "300px", height: 300, width: '50%', backgroundColor: "lightblue", fontWeight: "bolder" }}>
+            {context && <DataGrid rows={context?.transactions} columns={columns} />}
         </div>
     </>)
 }
