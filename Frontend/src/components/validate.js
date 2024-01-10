@@ -21,7 +21,7 @@ export function extractAlphanumeric(text) {
 }
 export function alphaWithSpecialChars(text) {
 
-    const alphanumericRegex = (/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-={};':"\\|,.<>?])[a-zA-Z0-9!@#$%^&*()_+\-={};':"\\|,.<>?]{8}$/)
+    const alphanumericRegex = (/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-={};':"\\|,.<>?])[a-zA-Z0-9!@#$%^&*()_+\-={};':"\\|,.<>?]{8,}$/)
     return !isNullOrBlank(text) && alphanumericRegex.test(text)
 
 }
