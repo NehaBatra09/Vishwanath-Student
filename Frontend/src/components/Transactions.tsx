@@ -7,7 +7,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid'
 const columns: GridColDef[] = [
     { field: 'tid', headerName: 'Transation Id', width: 150 },
     { field: 'total', headerName: 'Amount', width: 150 },
-    { field: 'credit', headerName: 'Payment Mode', width: 150 },
+    { field: 'credit', headerName: 'Payment', width: 150 },
 ];
 const Transactions: React.FC = () => {
     const context = useAuth();
